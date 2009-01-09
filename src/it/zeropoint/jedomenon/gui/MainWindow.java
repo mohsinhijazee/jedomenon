@@ -6,6 +6,7 @@
 
 package it.zeropoint.jedomenon.gui;
 import it.zeropoint.jedomenon.rest.Database;
+import it.zeropoint.jedomenon.rest.Database;
 /**
  *
  * @author  mohsinhijazee
@@ -50,9 +51,15 @@ public class MainWindow extends javax.swing.JFrame {
 
   private void getDatabasesButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_getDatabasesButtonActionPerformed
     // TODO add your handling code here:
-    Database d = new Database();
-    
-    jsonText.setText(d.get());
+    Database d = new Database(6);
+    try
+    {
+      jsonText.setText(d.getAll());
+    }
+    catch(Exception e)
+    {
+      
+    }
   }//GEN-LAST:event_getDatabasesButtonActionPerformed
   
   
