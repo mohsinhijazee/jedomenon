@@ -7,6 +7,8 @@
 package it.zeropoint.jedomenon.gui;
 import it.zeropoint.jedomenon.rest.Database;
 import it.zeropoint.jedomenon.rest.Database;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author  mohsinhijazee
@@ -26,47 +28,153 @@ public class MainWindow extends javax.swing.JFrame {
   // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
   private void initComponents() {
 
-    getDatabasesButton = new javax.swing.JButton();
-    jScrollPane1 = new javax.swing.JScrollPane();
-    jsonText = new javax.swing.JTextPane();
+    getDatabaseButton = new javax.swing.JButton();
+    getAllDatabases = new javax.swing.JButton();
+    deleteDatabase = new javax.swing.JButton();
+    updateButton = new javax.swing.JButton();
 
     setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
     setTitle("Celesus Convertor");
-    getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-    getDatabasesButton.setText("Get Databases");
-    getDatabasesButton.addActionListener(new java.awt.event.ActionListener() {
+    getDatabaseButton.setText("Get Database");
+    getDatabaseButton.addActionListener(new java.awt.event.ActionListener() {
       public void actionPerformed(java.awt.event.ActionEvent evt) {
-        getDatabasesButtonActionPerformed(evt);
+        getDatabaseButtonActionPerformed(evt);
       }
     });
-    getContentPane().add(getDatabasesButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 240, -1, -1));
 
-    jScrollPane1.setViewportView(jsonText);
+    getAllDatabases.setText("Get All databases");
+    getAllDatabases.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(java.awt.event.ActionEvent evt) {
+        getAllDatabasesActionPerformed(evt);
+      }
+    });
 
-    getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 400, 220));
+    deleteDatabase.setText("Delete database");
+    deleteDatabase.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(java.awt.event.ActionEvent evt) {
+        deleteDatabaseActionPerformed(evt);
+      }
+    });
+
+    updateButton.setText("Update");
+    updateButton.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(java.awt.event.ActionEvent evt) {
+        updateButtonActionPerformed(evt);
+      }
+    });
+
+    javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+    getContentPane().setLayout(layout);
+    layout.setHorizontalGroup(
+      layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+      .addGroup(layout.createSequentialGroup()
+        .addContainerGap()
+        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+          .addComponent(deleteDatabase)
+          .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(getAllDatabases)
+            .addComponent(getDatabaseButton)))
+        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 119, Short.MAX_VALUE)
+        .addComponent(updateButton)
+        .addGap(85, 85, 85))
+    );
+    layout.setVerticalGroup(
+      layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+      .addGroup(layout.createSequentialGroup()
+        .addContainerGap(115, Short.MAX_VALUE)
+        .addComponent(getDatabaseButton)
+        .addGap(18, 18, 18)
+        .addComponent(getAllDatabases)
+        .addGap(42, 42, 42)
+        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+          .addComponent(deleteDatabase)
+          .addComponent(updateButton))
+        .addGap(38, 38, 38))
+    );
 
     pack();
   }// </editor-fold>//GEN-END:initComponents
 
-  private void getDatabasesButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_getDatabasesButtonActionPerformed
-    // TODO add your handling code here:
-    Database d = new Database(6);
+  private void getDatabaseButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_getDatabaseButtonActionPerformed
     try
     {
-      jsonText.setText(d.getAll());
+      Database d = new Database(6);
+      String json = d.toJSON();
+      String msg = "Database of ID 6:\n" + json;
+      JOptionPane.showMessageDialog(this, msg);
+      
+      d = null;
+      d = new Database(json);
+      msg = "Created from JSON:\n" + json;
+      JOptionPane.showMessageDialog(this, msg);
+      
+    }catch(Exception e)
+    {
+      JOptionPane.showMessageDialog(this, e.toString());
+    }
+  }//GEN-LAST:event_getDatabaseButtonActionPerformed
+
+  private void getAllDatabasesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_getAllDatabasesActionPerformed
+    // TODO add your handling code here:
+    Database d = new Database();
+    
+    try
+    {
+      Database[] a = d.getAll();
+      String msg = "GET ALL: Length = " + a.length + "\n";
+      
+      for(int i = 0; i < a.length; i++)
+      {
+        msg += "\n\n" + a[i].toJSON();
+      }
+      
+      JOptionPane.showMessageDialog(this, msg);
     }
     catch(Exception e)
     {
+      JOptionPane.showMessageDialog(this, e.toString());
+    }
+  }//GEN-LAST:event_getAllDatabasesActionPerformed
+
+  private void deleteDatabaseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteDatabaseActionPerformed
+    try
+    {
+      Database d = new Database(6);
+      if(d.delete())
+        JOptionPane.showMessageDialog(this, "Deleted!");
+      else
+        JOptionPane.showMessageDialog(this, "Failed...");
       
     }
-  }//GEN-LAST:event_getDatabasesButtonActionPerformed
+    catch(Exception e)
+    {
+      JOptionPane.showMessageDialog(this, e.toString());
+    }
+  }//GEN-LAST:event_deleteDatabaseActionPerformed
+
+  private void updateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateButtonActionPerformed
+    try
+    {
+      Database d = new Database(6);
+      JOptionPane.showMessageDialog(this, "Before PUT:\n" + d.toJSON());
+      d.setAttribute("name", "Updated BY JAVA!!!");
+      d.put();
+      d = null;
+      d = new Database(6);
+      JOptionPane.showMessageDialog(this, "After PUT:\n" + d.toJSON());
+    }catch(Exception e)
+    {
+      JOptionPane.showMessageDialog(this, e.toString());
+    }
+  }//GEN-LAST:event_updateButtonActionPerformed
   
   
   // Variables declaration - do not modify//GEN-BEGIN:variables
-  private javax.swing.JButton getDatabasesButton;
-  private javax.swing.JScrollPane jScrollPane1;
-  private javax.swing.JTextPane jsonText;
+  private javax.swing.JButton deleteDatabase;
+  private javax.swing.JButton getAllDatabases;
+  private javax.swing.JButton getDatabaseButton;
+  private javax.swing.JButton updateButton;
   // End of variables declaration//GEN-END:variables
   
 }
