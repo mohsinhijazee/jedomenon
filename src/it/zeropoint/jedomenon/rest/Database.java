@@ -23,6 +23,7 @@ import org.apache.commons.httpclient.HttpStatus;
 import org.apache.commons.httpclient.NameValuePair;
 import org.apache.commons.httpclient.methods.DeleteMethod;
 import org.apache.commons.httpclient.methods.GetMethod;
+import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.methods.PutMethod;
 import org.apache.commons.httpclient.methods.RequestEntity;
 import org.apache.commons.httpclient.params.HttpClientParams;
@@ -59,6 +60,24 @@ public class Database {
   public  String format = "json";
   protected JSONObject object;
   
+  protected void initialize()
+  {
+    if(object == null)
+      object = new JSONObject();
+    try
+    {
+      object.put("url", "");
+      object.put("account_url", "");
+      object.put("entities_url", "");
+      object.put("details_url", "");
+      object.put("name", "");
+      object.put("lock_version", 0);
+    }
+    catch(JSONException e)
+    {
+      
+    }
+  }
   // <editor-fold defaultstate="collapsed" desc="Constructors">
   /**
    * Default constructor
@@ -66,6 +85,7 @@ public class Database {
   public Database()
   {
     object = new JSONObject();
+    initialize();
   }
   
   /**
@@ -130,8 +150,7 @@ public class Database {
    */
   public void setAttribute(String field, Object value) throws JSONException        
   {
-    object.remove(field);
-    object.put(field, value);
+    object.put(field, value);    
   }
   
   
@@ -215,6 +234,39 @@ public class Database {
       method.releaseConnection();
     }
     
+    return true;
+  }
+  
+  public boolean post()
+  {
+    HttpClient client = new HttpClient();
+    PostMethod method = new PostMethod(base_url + path + format);
+    NameValuePair[] data = {new NameValuePair("database", object.toString())};
+    method.setRequestBody(data);
+    
+    try
+    {
+      client.executeMethod(method);
+      if(method.getStatusCode() != HttpStatus.SC_CREATED)
+      {
+        String msg = "POST Failed: " + method.getStatusLine() + "\n";
+        msg += new String(method.getResponseBody());
+        System.err.println(msg);
+      }
+    }
+    catch(HttpException e)
+    {
+      System.err.println(e.toString());
+    }
+    catch(IOException e)
+    {
+      System.err.println(e.toString());
+    }
+    finally
+    {
+      method.releaseConnection();
+    }
+            
     return true;
   }
   
