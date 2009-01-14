@@ -26,7 +26,7 @@ import org.json.JSONObject;
  * @author mohsinhijazee
  */
 
-public class Resource {
+public class Resource <ResourceType> {
   
   protected static String baseURL;
   protected static String format;
@@ -34,7 +34,35 @@ public class Resource {
   protected JSONObject resource;
   protected static HttpClient httpClient = new HttpClient();
   
+  //<editor-fold defaultstate="collapsed" desc="Constructors">
+  public Resource()
+  {
+     this.initialize(); 
+  }
   
+  public Resource(int id) throws IOException, RestException, JSONException
+  {
+    this.resource = this.fromID(id, null);
+  }
+  
+  public Resource(String url) throws IOException, RestException, JSONException
+  {
+    this.resource = this.fromURL(url, null);
+  }
+  
+  public Resource(JSONObject json)
+  {
+    this.resource = json;
+  }
+  
+  protected void initialize()
+  {
+    this.resource = new JSONObject();
+  }
+  //</editor-fold>
+
+  
+
   //<editor-fold defaultstate="collapsed" desc="Utility Methods">
   /**
    * Gets the path of the resource
@@ -42,7 +70,6 @@ public class Resource {
    */
   public String getPath()
   {
-    Resource res = new Resource();
     return path;
   }
   
@@ -53,6 +80,28 @@ public class Resource {
   public String getFullPath()
   {
     return baseURL + path + "." + format;
+  }
+  
+    /**
+   * Gets the attribute of given name
+   * @param field name to get
+   * @return returns the value
+   * @throws org.json.JSONException
+   */
+  public Object getAttribute(String field) throws JSONException
+  {
+    return this.resource.get(field);
+  }
+  
+  /**
+   * Sets the attribute value
+   * @param field is the name of the field
+   * @param value value is the value to be set
+   * @throws org.json.JSONException
+   */
+  public void setAttribute(String field, Object value) throws JSONException        
+  {
+    this.resource.put(field, value);    
   }
   
       /**
@@ -111,13 +160,13 @@ public class Resource {
     return httpMethod;
   }
   
-  public JSONObject fromID(int id) throws IOException, RestException, JSONException
+  public JSONObject fromID(int id, NameValuePair[] options) throws IOException, RestException, JSONException
   {
     String url = baseURL + path + "/" + Integer.toString(id) + "." + format;
-    return fromURL(url);
+    return fromURL(url, options);
   }
   
-  public JSONObject fromURL(String url) throws IOException, RestException, JSONException
+  public JSONObject fromURL(String url, NameValuePair[] options) throws IOException, RestException, JSONException
   {
     GetMethod method = (GetMethod)executeMethod(url, "GET", null);
     reportPossibleException(method);
@@ -126,7 +175,7 @@ public class Resource {
   
   public JSONObject fromJSON(String json) throws JSONException
   {
-    return new JSONObject(json);
+    return  new JSONObject(json);
   }
   
   /**
@@ -150,14 +199,34 @@ public class Resource {
   }
   //</editor-fold>
   
+  //<editor-fold defaultstate="collapsed" desc="HTTP Methods">
+  
+  public ResourceType doGet() throws JSONException, IOException, RestException
+  {
+    return this.doGet((String)this.getAttribute("url"));
+  }
+  
+  public ResourceType doGet(int id) throws IOException, RestException, JSONException
+  {
+    this.resource = this.fromID(id, null);
+    return ((ResourceType)this);
+  }
+  
+  public ResourceType doGet(String url) throws IOException, RestException, JSONException
+  {
+    this.resource = this.fromURL(url, null);
+    return ((ResourceType)this);
+  }
+  
+  //</editor-fold>
+  
   // How many ways you can get?
   // id
   // url
   // json
   // json object
   
-  
-  
-  
 
 }
+
+
