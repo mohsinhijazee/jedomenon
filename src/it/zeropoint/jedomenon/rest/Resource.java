@@ -201,17 +201,41 @@ public class Resource <ResourceType> {
   
   //<editor-fold defaultstate="collapsed" desc="HTTP Methods">
   
+  /**
+   * Gets the remote resource from the url in it. Call it to reload for example.
+   * @return Object fo appropiate type
+   * @throws org.json.JSONException
+   * @throws java.io.IOException
+   * @throws it.zeropoint.jedomenon.rest.exceptions.RestException
+   */
   public ResourceType doGet() throws JSONException, IOException, RestException
   {
     return this.doGet((String)this.getAttribute("url"));
   }
   
+  /**
+   * Load the resource of given id
+   * 
+   * @param id of the remote resource
+   * @return Object of appropiate type
+   * @throws java.io.IOException
+   * @throws it.zeropoint.jedomenon.rest.exceptions.RestException
+   * @throws org.json.JSONException
+   */
   public ResourceType doGet(int id) throws IOException, RestException, JSONException
   {
     this.resource = this.fromID(id, null);
     return ((ResourceType)this);
   }
   
+  /**
+   * Get the remote resource from the given URL
+   * @param url where the resouce to be fetched from
+   * @return Resource of appropiate type
+   * @throws java.io.IOException
+   * @throws it.zeropoint.jedomenon.rest.exceptions.RestException
+   * @throws org.json.JSONException
+   */
   public ResourceType doGet(String url) throws IOException, RestException, JSONException
   {
     this.resource = this.fromURL(url, null);
