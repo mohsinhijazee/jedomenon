@@ -7,6 +7,8 @@
 package it.zeropoint.jedomenon.gui;
 import it.zeropoint.jedomenon.rest.Database;
 import it.zeropoint.jedomenon.rest.Database;
+import it.zeropoint.jedomenon.rest.Resource;
+import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
 /**
@@ -99,34 +101,40 @@ public class MainWindow extends javax.swing.JFrame {
   private void getDatabaseButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_getDatabaseButtonActionPerformed
     try
     {
+      Resource.setBaseURL("http://localhost:3000");
       Database d = new Database(6);
-      String json = d.toJSON();
+      
+      String json = d.toJSON(2);
       String msg = "Database of ID 6:\n" + json;
       JOptionPane.showMessageDialog(this, msg);
       
       d = null;
-      d = new Database(json);
-      msg = "Created from JSON:\n" + json;
+      d = (Database) Resource.buildFromJSON(json);
+      msg = "Created from JSON:\n" + d.toJSON(2);
       JOptionPane.showMessageDialog(this, msg);
       
     }catch(Exception e)
     {
       JOptionPane.showMessageDialog(this, e.toString());
+      e.printStackTrace();
     }
   }//GEN-LAST:event_getDatabaseButtonActionPerformed
 
   private void getAllDatabasesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_getAllDatabasesActionPerformed
-    // TODO add your handling code here:
-    Database d = new Database();
+    
+
+    Resource.setBaseURL("http://localhost:3000");
+    
     
     try
     {
-      Database[] a = d.getAll();
-      String msg = "GET ALL: Length = " + a.length + "\n";
+      Database d = new Database();
+      ArrayList<Database>  a = d.doGetAll(null);
+      String msg = "GET ALL: Length = " + a.size() + "\n";
       
-      for(int i = 0; i < a.length; i++)
+      for(int i = 0; i < a.size(); i++)
       {
-        msg += "\n\n" + a[i].toJSON();
+        msg += "\n\n" + a.get(i).toJSON(2);
       }
       
       JOptionPane.showMessageDialog(this, msg);
@@ -135,9 +143,11 @@ public class MainWindow extends javax.swing.JFrame {
     {
       JOptionPane.showMessageDialog(this, e.toString());
     }
+
   }//GEN-LAST:event_getAllDatabasesActionPerformed
 
   private void deleteDatabaseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteDatabaseActionPerformed
+/*
     try
     {
       Database d = new Database(6);
@@ -151,9 +161,11 @@ public class MainWindow extends javax.swing.JFrame {
     {
       JOptionPane.showMessageDialog(this, e.toString());
     }
+ * */
   }//GEN-LAST:event_deleteDatabaseActionPerformed
 
   private void updateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateButtonActionPerformed
+    /*
     try
     {
       Database d = new Database(6);
@@ -167,6 +179,7 @@ public class MainWindow extends javax.swing.JFrame {
     {
       JOptionPane.showMessageDialog(this, e.toString());
     }
+     * */
   }//GEN-LAST:event_updateButtonActionPerformed
   
   
