@@ -8,6 +8,7 @@ package it.zeropoint.jedomenon.rest;
 import it.zeropoint.jedomenon.rest.exceptions.ResourceNotFound;
 import it.zeropoint.jedomenon.rest.exceptions.RestException;
 import java.io.IOException;
+import java.util.ArrayList;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpException;
 import org.apache.commons.httpclient.HttpMethod;
@@ -17,27 +18,29 @@ import org.apache.commons.httpclient.methods.DeleteMethod;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.methods.PutMethod;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 
 /**
- *
- * @author mohsinhijazee
+ * Represents a single REST Resource
+ * 
+ * @author Mohsin Hijazee
  */
 
 public class Resource <ResourceType> {
   
   protected static String baseURL;
-  protected static String format;
+  protected static String format = "json";
   protected String path;
   protected JSONObject resource;
   protected static HttpClient httpClient = new HttpClient();
   
   //<editor-fold defaultstate="collapsed" desc="Constructors">
-  public Resource()
+  public Resource() throws JSONException
   {
-     this.initialize(); 
+     this.initialize(null); 
   }
   
   public Resource(int id) throws IOException, RestException, JSONException
@@ -55,15 +58,40 @@ public class Resource <ResourceType> {
     this.resource = json;
   }
   
-  protected void initialize()
+  protected void initialize(JSONObject jsonResource) throws JSONException
   {
-    this.resource = new JSONObject();
+    if(jsonResource == null)
+    {
+      this.resource = new JSONObject();
+      resource.put("url", "");
+    }
+    else
+      this.resource = jsonResource;
+    
+    
   }
   //</editor-fold>
 
+  //<editor-fold defaultstate="collapsed" desc="Builders">
+  public static Resource buildFromJSON(String json) throws JSONException
+  {
+    JSONObject jsonObj = new JSONObject(json);
+    return ((new Resource(jsonObj)));
+  }
+  //</editor-fold>  
   
-
   //<editor-fold defaultstate="collapsed" desc="Utility Methods">
+  
+  public static void setBaseURL(String url)
+  {
+    baseURL = url;
+  }
+  
+  public static String getBaseURL()
+  {
+    return baseURL;
+  }
+ 
   /**
    * Gets the path of the resource
    * @return
@@ -86,7 +114,7 @@ public class Resource <ResourceType> {
    * Gets the attribute of given name
    * @param field name to get
    * @return returns the value
-   * @throws org.json.JSONException
+   * @throws org.jsonResource.JSONException
    */
   public Object getAttribute(String field) throws JSONException
   {
@@ -97,13 +125,44 @@ public class Resource <ResourceType> {
    * Sets the attribute value
    * @param field is the name of the field
    * @param value value is the value to be set
-   * @throws org.json.JSONException
+   * @throws org.jsonResource.JSONException
    */
   public void setAttribute(String field, Object value) throws JSONException        
   {
     this.resource.put(field, value);    
   }
   
+  public String toJSON()
+  {
+    return this.resource.toString();
+  }
+  
+  public String toJSON(int indentFactor) throws JSONException
+  {
+    return this.resource.toString(indentFactor);
+  }
+  /**
+   * This method returns the resource as a name value pair. This must be 
+   * overriden by the child classes. This is needed because each PUT and POST
+   * request in current version of the API requires you to mention payload
+   * in a parameter named after the type of resource. But in future versions,
+   * payload would be always 
+   * @return the object as a name value pair.
+   */
+  protected NameValuePair[] getPostData()
+  {
+    NameValuePair[] data = {new NameValuePair("resource", this.resource.toString())};
+    return data;
+  }
+  
+  /**
+   * Gets the URL of the resource being held
+   * @return URL of the resource
+   */
+  public String url()
+  {
+    return this.resource.optString("url");
+  }
       /**
    * Executes the given HTTP method on given URL with optionally supplied data.
    * 
@@ -166,11 +225,14 @@ public class Resource <ResourceType> {
     return fromURL(url, options);
   }
   
+  
   public JSONObject fromURL(String url, NameValuePair[] options) throws IOException, RestException, JSONException
   {
     GetMethod method = (GetMethod)executeMethod(url, "GET", null);
     reportPossibleException(method);
-    return new JSONObject(new String(method.getResponseBody()));
+    String json = new String(method.getResponseBody());
+    method.releaseConnection();
+    return new JSONObject(json);
   }
   
   public JSONObject fromJSON(String json) throws JSONException
@@ -204,7 +266,7 @@ public class Resource <ResourceType> {
   /**
    * Gets the remote resource from the url in it. Call it to reload for example.
    * @return Object fo appropiate type
-   * @throws org.json.JSONException
+   * @throws org.jsonResource.JSONException
    * @throws java.io.IOException
    * @throws it.zeropoint.jedomenon.rest.exceptions.RestException
    */
@@ -220,7 +282,7 @@ public class Resource <ResourceType> {
    * @return Object of appropiate type
    * @throws java.io.IOException
    * @throws it.zeropoint.jedomenon.rest.exceptions.RestException
-   * @throws org.json.JSONException
+   * @throws org.jsonResource.JSONException
    */
   public ResourceType doGet(int id) throws IOException, RestException, JSONException
   {
@@ -234,7 +296,7 @@ public class Resource <ResourceType> {
    * @return Resource of appropiate type
    * @throws java.io.IOException
    * @throws it.zeropoint.jedomenon.rest.exceptions.RestException
-   * @throws org.json.JSONException
+   * @throws org.jsonResource.JSONException
    */
   public ResourceType doGet(String url) throws IOException, RestException, JSONException
   {
@@ -242,13 +304,170 @@ public class Resource <ResourceType> {
     return ((ResourceType)this);
   }
   
+  /**
+   * Gets all the resources based on any context provided. For example, if you're
+   * Trying to get Details of a database, do make a call like this:
+   * Better e
+   * Detail detailObj = new Detail();
+   * @param context
+   * @return
+   * @throws java.io.IOException
+   * @throws it.zeropoint.jedomenon.rest.exceptions.RestException
+   * @throws org.jsonResource.JSONException
+   */
+  protected ArrayList<ResourceType> GetAll(NameValuePair[] context) throws IOException, RestException, JSONException
+  {
+    // Excute the method
+    GetMethod method = (GetMethod) executeMethod(this.getFullPath(), "GET", context);
+    ArrayList<ResourceType> resource_list = new ArrayList<ResourceType>();
+    
+    
+    reportPossibleException(method);
+    JSONObject resource_parcel = new JSONObject(new String(method.getResponseBody()));
+    
+    
+    JSONArray resources = resource_parcel.getJSONArray("resources");
+    
+    
+    
+    for(int i = 0; i < resources.length(); i++)
+      resource_list.add((ResourceType)new Resource(resources.getJSONObject(i)));
+    
+    method.releaseConnection();
+
+    return (resource_list);
+  }
+  
+  /**
+   * Gets all the resources. Child classes woudl have to override and
+   * supply NameValueParameters for themselves.
+   * @return
+   */
+  public ResourceType[] doGetAll()
+  {
+    return null;
+  }
+  
+  /**
+   * Gets all the resources based on conditions. 
+   * @param conditions
+   * @return
+   */
+  public ArrayList<ResourceType> doGetAll(NameValuePair[] conditions) throws IOException, JSONException, RestException
+  {
+    return this.GetAll(conditions);
+  }
+  
+  /**
+   * Would PUT this object to remove server
+   * @return reference to itself
+   */
+  public ResourceType doPut() throws IOException, RestException, JSONException
+  {
+    // {new NameValuePair("database", this.resource.toString())};
+    NameValuePair[] data = getPostData();
+    PutMethod method = null;
+    
+    method = (PutMethod) executeMethod(this.url(), "PUT", data); 
+    reportPossibleException(method);
+      
+    this.resource = new JSONObject(new String(method.getResponseBody()));
+    method.releaseConnection();
+    return ((ResourceType)(this));
+      
+    
+  }
+  
+  /**
+   * Internal DELETE method takes into considertation the lock versino as well
+   * @param url
+   * @param lock_version
+   * @return
+   */
+  public String doDelete(String url, NameValuePair[] lock_version) throws IOException, RestException
+  {
+    DeleteMethod method = (DeleteMethod)executeMethod(url, "DELETE", lock_version);
+    reportPossibleException(method);
+    String response = new String(method.getResponseBody());
+    method.releaseConnection();
+    return response;
+  }
+  
+  
+  /**
+   * Delete current object
+   * @return True of deletion succusfull false otherwise.
+   */
+  public boolean doDelete() throws IOException, RestException
+  {
+    NameValuePair[] lock_version = null;
+    
+    if(this.resource.has("lock_version"))
+    {
+      lock_version = new NameValuePair[1];
+      lock_version[0] = new NameValuePair("lock_version", 
+              Integer.toString(this.resource.optInt("lock_version")));
+    }
+    
+      
+    String response = doDelete(this.url(), lock_version);
+    
+    return response.equalsIgnoreCase("OK") ? true : false;
+    
+  }
+  
+  public boolean doDelete(int id) throws IOException, RestException
+  {
+    String url = baseURL + path + "/" + id + "." + format;
+    return doDelete(url);
+  }
+  
+  /**
+   * Performs DELETE on the resource of the given URL
+   * @param url URL of the resource
+   * @return true if succeeds false otherwise
+   * @throws java.io.IOException
+   * @throws it.zeropoint.jedomenon.rest.exceptions.RestException
+   */
+  public boolean doDelete(String url) throws IOException, RestException
+  {
+    String response  = doDelete(url, null);
+    return response.equalsIgnoreCase("OK") ? true : false;
+  }
+  
+  /**
+   * Posts the current object to Dedomenon
+   * @return reference to itself
+   * @throws java.io.IOException
+   * @throws org.jsonResource.JSONException
+   * @throws it.zeropoint.jedomenon.rest.exceptions.RestException
+   */
+  public ResourceType doPost() throws IOException, JSONException, RestException
+  {
+    NameValuePair[] data = getPostData();
+    PostMethod method = null;
+    
+  
+    method = (PostMethod)executeMethod(this.getFullPath(),
+            "POST", data);
+      
+      
+    String json = new String(method.getResponseBody());
+    JSONArray array = new JSONArray(json);
+    method.releaseConnection();
+    this.resource = fromURL(array.getString(0), null);
+    method.releaseConnection();
+    return ((ResourceType)(this));
+  }
+  
+  
   //</editor-fold>
   
   // How many ways you can get?
   // id
   // url
-  // json
-  // json object
+  // jsonResource
+  // jsonResource object
   
 
 }
