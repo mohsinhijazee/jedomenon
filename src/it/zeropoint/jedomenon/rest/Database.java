@@ -15,7 +15,7 @@ import org.json.JSONObject;
  * Represents a Dedomenon Database
  * @author Mohsin Hijazee
  */
-public class Database extends Resource<Database>
+public class Database extends Resource
 {
   
   // <editor-fold defaultstate="collapsed" desc="Constructors"> 
@@ -39,6 +39,11 @@ public class Database extends Resource<Database>
   public Database(JSONObject json) throws JSONException
   {
     this.initialize(json);
+  }
+  
+  public Database(Resource resource)
+  {
+    super(resource);
   }
   // </editor-fold>
   
@@ -73,7 +78,46 @@ public class Database extends Resource<Database>
             this.resource.toString())};
     return data;
   }
-  // </editor-fold>
+  
+    // <editor-fold defaultstate="collapsed" desc="HTTP Methods">
+      // <editor-fold defaultstate="collapsed" desc="GET">
+  @Override
+  public Database doGet() throws JSONException, IOException, RestException
+  {
+    super.doGet();
+    return this;
+  }
+  
+  @Override
+  public Database doGet(int id) throws JSONException, IOException, RestException
+  {
+    super.doGet(id);
+    return this;
+  }
+  
+  @Override
+  public Database doGet(String url) throws JSONException, IOException, RestException
+  {
+    super.doGet(url);
+    return this;
+  }
+      // </editor-fold>
+  
+      // <editor-fold defaultstate="collapsed" desc="GET ALL">
+  @Override
+  public Database[] doGetAll() throws IOException, RestException, JSONException
+  {
+    Resource[] resources = super.GetAll(null);
+    Database[] databases = new Database[resources.length];
+    
+    for(int i = 0; i < resources.length; i++)
+      databases[i] = new Database(resources[i]);
+    
+    return databases;
+  }
+      // </editor-fold>
+    // </editor-fold> HTTP Methods
+  // </editor-fold> Overrides
   
   // <editor-fold defaultstate="collapsed" desc="Specific methods"> 
   // </editor-fold>
