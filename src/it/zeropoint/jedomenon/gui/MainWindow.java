@@ -109,7 +109,7 @@ public class MainWindow extends javax.swing.JFrame {
       JOptionPane.showMessageDialog(this, msg);
       
       d = null;
-      d = (Database) Resource.buildFromJSON(json);
+      d = new Database(Resource.buildFromJSON(json));
       msg = "Created from JSON:\n" + d.toJSON(2);
       JOptionPane.showMessageDialog(this, msg);
       
@@ -129,12 +129,12 @@ public class MainWindow extends javax.swing.JFrame {
     try
     {
       Database d = new Database();
-      ArrayList<Database>  a = d.doGetAll(null);
-      String msg = "GET ALL: Length = " + a.size() + "\n";
+      Database[]  a = d.doGetAll();
+      String msg = "GET ALL: Length = " + a.length + "\n";
       
-      for(int i = 0; i < a.size(); i++)
+      for(int i = 0; i < a.length; i++)
       {
-        msg += "\n\n" + a.get(i).toJSON(2);
+        msg += "\n\n" + a[i].toJSON(2);
       }
       
       JOptionPane.showMessageDialog(this, msg);
