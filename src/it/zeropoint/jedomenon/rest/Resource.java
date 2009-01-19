@@ -29,7 +29,7 @@ import org.json.JSONObject;
  * @author Mohsin Hijazee
  */
 
-public class Resource <ResourceType> {
+public class Resource {
   
   protected static String baseURL;
   protected static String format = "json";
@@ -58,6 +58,11 @@ public class Resource <ResourceType> {
     this.resource = json;
   }
   
+  public Resource(Resource resource)
+  {
+    this.resource = resource.resource;
+  }
+  
   protected void initialize(JSONObject jsonResource) throws JSONException
   {
     if(jsonResource == null)
@@ -73,14 +78,25 @@ public class Resource <ResourceType> {
   //</editor-fold>
 
   //<editor-fold defaultstate="collapsed" desc="Builders">
-  public static Resource buildFromJSON(String json) throws JSONException
+  // Override this
+  public static JSONObject buildFromJSON(String json) throws JSONException
   {
-    JSONObject jsonObj = new JSONObject(json);
-    return ((new Resource(jsonObj)));
+    return new JSONObject(json);
+    
   }
   //</editor-fold>  
   
   //<editor-fold defaultstate="collapsed" desc="Utility Methods">
+  
+  /**
+   * Internal method to expose the resource to child classes.
+   * @return
+   */
+  
+  protected JSONObject getResource()
+  {
+    return this.resource;
+  }
   
   public static void setBaseURL(String url)
   {
@@ -270,9 +286,10 @@ public class Resource <ResourceType> {
    * @throws java.io.IOException
    * @throws it.zeropoint.jedomenon.rest.exceptions.RestException
    */
-  public ResourceType doGet() throws JSONException, IOException, RestException
+  public Resource doGet() throws JSONException, IOException, RestException
   {
-    return this.doGet((String)this.getAttribute("url"));
+    this.resource = this.doGet((String)this.getAttribute("url")).resource;
+    return this;
   }
   
   /**
@@ -284,10 +301,11 @@ public class Resource <ResourceType> {
    * @throws it.zeropoint.jedomenon.rest.exceptions.RestException
    * @throws org.jsonResource.JSONException
    */
-  public ResourceType doGet(int id) throws IOException, RestException, JSONException
+  public Resource doGet(int id) throws IOException, RestException, JSONException
   {
     this.resource = this.fromID(id, null);
-    return ((ResourceType)this);
+    return this;
+    
   }
   
   /**
@@ -298,10 +316,10 @@ public class Resource <ResourceType> {
    * @throws it.zeropoint.jedomenon.rest.exceptions.RestException
    * @throws org.jsonResource.JSONException
    */
-  public ResourceType doGet(String url) throws IOException, RestException, JSONException
+  public Resource doGet(String url) throws IOException, RestException, JSONException
   {
-    this.resource = this.fromURL(url, null);
-    return ((ResourceType)this);
+    this.resource =  this.fromURL(url, null);
+    return this;
   }
   
   /**
@@ -315,11 +333,11 @@ public class Resource <ResourceType> {
    * @throws it.zeropoint.jedomenon.rest.exceptions.RestException
    * @throws org.jsonResource.JSONException
    */
-  protected ArrayList<ResourceType> GetAll(NameValuePair[] context) throws IOException, RestException, JSONException
+  protected Resource[] GetAll(NameValuePair[] context) throws IOException, RestException, JSONException
   {
     // Excute the method
     GetMethod method = (GetMethod) executeMethod(this.getFullPath(), "GET", context);
-    ArrayList<ResourceType> resource_list = new ArrayList<ResourceType>();
+    Resource[] resource_list = null;
     
     
     reportPossibleException(method);
@@ -327,11 +345,11 @@ public class Resource <ResourceType> {
     
     
     JSONArray resources = resource_parcel.getJSONArray("resources");
-    
+    resource_list = new Resource[resources.length()];
     
     
     for(int i = 0; i < resources.length(); i++)
-      resource_list.add((ResourceType)new Resource(resources.getJSONObject(i)));
+      resource_list[i] = new Resource(resources.getJSONObject(i));
     
     method.releaseConnection();
 
@@ -343,9 +361,9 @@ public class Resource <ResourceType> {
    * supply NameValueParameters for themselves.
    * @return
    */
-  public ResourceType[] doGetAll()
+  public Resource[] doGetAll() throws IOException, RestException, JSONException
   {
-    return null;
+    return this.GetAll(null);
   }
   
   /**
@@ -353,7 +371,7 @@ public class Resource <ResourceType> {
    * @param conditions
    * @return
    */
-  public ArrayList<ResourceType> doGetAll(NameValuePair[] conditions) throws IOException, JSONException, RestException
+  public Resource[] doGetAll(NameValuePair[] conditions) throws IOException, JSONException, RestException
   {
     return this.GetAll(conditions);
   }
@@ -362,7 +380,7 @@ public class Resource <ResourceType> {
    * Would PUT this object to remove server
    * @return reference to itself
    */
-  public ResourceType doPut() throws IOException, RestException, JSONException
+  public JSONObject doPut() throws IOException, RestException, JSONException
   {
     // {new NameValuePair("database", this.resource.toString())};
     NameValuePair[] data = getPostData();
@@ -373,7 +391,7 @@ public class Resource <ResourceType> {
       
     this.resource = new JSONObject(new String(method.getResponseBody()));
     method.releaseConnection();
-    return ((ResourceType)(this));
+    return this.resource;
       
     
   }
@@ -442,7 +460,7 @@ public class Resource <ResourceType> {
    * @throws org.jsonResource.JSONException
    * @throws it.zeropoint.jedomenon.rest.exceptions.RestException
    */
-  public ResourceType doPost() throws IOException, JSONException, RestException
+  public JSONObject doPost() throws IOException, JSONException, RestException
   {
     NameValuePair[] data = getPostData();
     PostMethod method = null;
@@ -457,7 +475,7 @@ public class Resource <ResourceType> {
     method.releaseConnection();
     this.resource = fromURL(array.getString(0), null);
     method.releaseConnection();
-    return ((ResourceType)(this));
+    return this.resource;
   }
   
   
