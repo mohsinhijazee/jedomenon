@@ -7,6 +7,7 @@
 package it.zeropoint.jedomenon.gui;
 import it.zeropoint.jedomenon.rest.Database;
 import it.zeropoint.jedomenon.rest.Database;
+import it.zeropoint.jedomenon.rest.Entity;
 import it.zeropoint.jedomenon.rest.Resource;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
@@ -34,37 +35,56 @@ public class MainWindow extends javax.swing.JFrame {
     getAllDatabases = new javax.swing.JButton();
     deleteDatabase = new javax.swing.JButton();
     updateButton = new javax.swing.JButton();
+    postDatabaseButton = new javax.swing.JButton();
+    jButton1 = new javax.swing.JButton();
+    jButton2 = new javax.swing.JButton();
 
     setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
     setTitle("Celesus Convertor");
 
-    getDatabaseButton.setText("Get Database");
+    getDatabaseButton.setText("GET");
     getDatabaseButton.addActionListener(new java.awt.event.ActionListener() {
       public void actionPerformed(java.awt.event.ActionEvent evt) {
         getDatabaseButtonActionPerformed(evt);
       }
     });
 
-    getAllDatabases.setText("Get All databases");
+    getAllDatabases.setText("GETALL");
     getAllDatabases.addActionListener(new java.awt.event.ActionListener() {
       public void actionPerformed(java.awt.event.ActionEvent evt) {
         getAllDatabasesActionPerformed(evt);
       }
     });
 
-    deleteDatabase.setText("Delete database");
+    deleteDatabase.setText("DELETE");
     deleteDatabase.addActionListener(new java.awt.event.ActionListener() {
       public void actionPerformed(java.awt.event.ActionEvent evt) {
         deleteDatabaseActionPerformed(evt);
       }
     });
 
-    updateButton.setText("Update");
+    updateButton.setText("PUT");
     updateButton.addActionListener(new java.awt.event.ActionListener() {
       public void actionPerformed(java.awt.event.ActionEvent evt) {
         updateButtonActionPerformed(evt);
       }
     });
+
+    postDatabaseButton.setText("POST");
+    postDatabaseButton.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(java.awt.event.ActionEvent evt) {
+        postDatabaseButtonActionPerformed(evt);
+      }
+    });
+
+    jButton1.setText("GET /entities.json");
+    jButton1.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(java.awt.event.ActionEvent evt) {
+        jButton1ActionPerformed(evt);
+      }
+    });
+
+    jButton2.setText("GET /details.json");
 
     javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
     getContentPane().setLayout(layout);
@@ -77,15 +97,33 @@ public class MainWindow extends javax.swing.JFrame {
           .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(getAllDatabases)
             .addComponent(getDatabaseButton)))
-        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 119, Short.MAX_VALUE)
-        .addComponent(updateButton)
-        .addGap(85, 85, 85))
+        .addGap(144, 144, 144)
+        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+          .addGroup(layout.createSequentialGroup()
+            .addComponent(jButton2)
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+              .addGroup(layout.createSequentialGroup()
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(updateButton)
+                .addGap(85, 85, 85))
+              .addGroup(layout.createSequentialGroup()
+                .addGap(55, 55, 55)
+                .addComponent(postDatabaseButton))))
+          .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addComponent(jButton1)
+            .addGap(62, 62, 62))))
     );
     layout.setVerticalGroup(
       layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
       .addGroup(layout.createSequentialGroup()
-        .addContainerGap(115, Short.MAX_VALUE)
-        .addComponent(getDatabaseButton)
+        .addGap(43, 43, 43)
+        .addComponent(jButton1)
+        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 43, Short.MAX_VALUE)
+        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+          .addComponent(getDatabaseButton)
+          .addComponent(postDatabaseButton)
+          .addComponent(jButton2))
         .addGap(18, 18, 18)
         .addComponent(getAllDatabases)
         .addGap(42, 42, 42)
@@ -147,11 +185,23 @@ public class MainWindow extends javax.swing.JFrame {
   }//GEN-LAST:event_getAllDatabasesActionPerformed
 
   private void deleteDatabaseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteDatabaseActionPerformed
-/*
+
     try
     {
+      
       Database d = new Database(6);
-      if(d.delete())
+      if(d.doDelete())
+        JOptionPane.showMessageDialog(this, "Deleted!");
+      else
+        JOptionPane.showMessageDialog(this, "Failed...");
+      
+      d = new Database();
+      d.setName("New Temp Database");
+      d.setAccountURL("http://localhost:3000/accounts/1.json");
+      d.doPost();
+      JOptionPane.showMessageDialog(this, d.toJSON(2));
+      
+      if(d.doDelete(d.url()))
         JOptionPane.showMessageDialog(this, "Deleted!");
       else
         JOptionPane.showMessageDialog(this, "Failed...");
@@ -161,32 +211,71 @@ public class MainWindow extends javax.swing.JFrame {
     {
       JOptionPane.showMessageDialog(this, e.toString());
     }
- * */
+
   }//GEN-LAST:event_deleteDatabaseActionPerformed
 
   private void updateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateButtonActionPerformed
-    /*
+   
     try
     {
+      Resource.setBaseURL("http://localhost:3000");
       Database d = new Database(6);
-      JOptionPane.showMessageDialog(this, "Before PUT:\n" + d.toJSON());
-      d.setAttribute("name", "Updated BY JAVA!!!");
-      d.put();
+      JOptionPane.showMessageDialog(this, "Before PUT:\n" + d.toJSON(2));
+      d.setName("Updated BY JAVA!!!");
+      d.doPut();
       d = null;
       d = new Database(6);
-      JOptionPane.showMessageDialog(this, "After PUT:\n" + d.toJSON());
+      JOptionPane.showMessageDialog(this, "After PUT:\n" + d.toJSON(2));
     }catch(Exception e)
     {
       JOptionPane.showMessageDialog(this, e.toString());
     }
-     * */
+   
   }//GEN-LAST:event_updateButtonActionPerformed
+
+  private void postDatabaseButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_postDatabaseButtonActionPerformed
+    // TODO add your handling code here:
+    try
+    {
+      Resource.setBaseURL("http://localhost:3000");
+      Database d = new Database();
+      d.setName("MY NEWLY JAVA DATABASE");
+      d.setAccountURL("http://localhost:3000/accounts/1.json");
+      d.doPost();
+      JOptionPane.showMessageDialog(this, d.toJSON(2));
+    }
+    catch(Exception e)
+    {
+      JOptionPane.showMessageDialog(this, e);
+      e.printStackTrace();
+    }
+  }//GEN-LAST:event_postDatabaseButtonActionPerformed
+
+  private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    // TODO add your handling code here:
+    try
+    {
+      String baseURL = "http://localhost:3000";
+      Resource.setBaseURL(baseURL);
+      Database d = new Database(6);
+      Entity[] entities = d.getEntities();
+      
+    }
+    catch(Exception e)
+      {
+        JOptionPane.showMessageDialog(this, e);
+        e.printStackTrace();
+      }
+  }//GEN-LAST:event_jButton1ActionPerformed
   
   
   // Variables declaration - do not modify//GEN-BEGIN:variables
   private javax.swing.JButton deleteDatabase;
   private javax.swing.JButton getAllDatabases;
   private javax.swing.JButton getDatabaseButton;
+  private javax.swing.JButton jButton1;
+  private javax.swing.JButton jButton2;
+  private javax.swing.JButton postDatabaseButton;
   private javax.swing.JButton updateButton;
   // End of variables declaration//GEN-END:variables
   

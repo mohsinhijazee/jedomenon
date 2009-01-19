@@ -116,9 +116,104 @@ public class Database extends Resource
     return databases;
   }
       // </editor-fold>
+  
+      // <editor-fold defaultstate="collapsed" desc="POST">
+  @Override
+  public Database doPost() throws IOException, JSONException, RestException
+  {
+    super.doPost();
+    return this;
+  }
+     // </editor-fold> POST
+  
+      // <editor-fold defaultstate="collapsed" desc="PUT">
+  @Override
+  public Database doPut() throws IOException, RestException, JSONException
+  {
+    super.doPut();
+    return this;
+  }
+      // </editor-fold>
+  
+  
     // </editor-fold> HTTP Methods
   // </editor-fold> Overrides
   
   // <editor-fold defaultstate="collapsed" desc="Specific methods"> 
+  public String getName() throws JSONException
+  {
+    return (String)this.getAttribute("name");
+  }
+  
+  public void setName(String name) throws JSONException
+  {
+    this.setAttribute("name", name);
+  }
+  
+  public String getAccountURL() throws JSONException
+  {
+    return (String)this.getAttribute("account_url");
+  }
+  
+  public void setAccountURL(String accountURL) throws JSONException
+  {
+    this.setAttribute("account_url", accountURL);
+  }
+  
+  public String getEntitiesURL() throws JSONException
+  {
+    return (String)this.getAttribute("entities_url");
+  }
+  
+  public String getDetailsURL() throws JSONException
+  {
+    return (String)this.getAttribute("details_url");
+  }
+  
+  
+  public Entity[] getEntities() throws JSONException, IOException, RestException
+  {
+    // Get the URL for entities
+    Entity e = new Entity();
+    String url = e.getFullPath();
+    // Prepare a condition for it
+    NameValuePair[] context  = {new NameValuePair("database_id", 
+                                  Integer.toString(this.fromURLToID(this.url())))};
+    
+    Entity[] entities = null;
+    // Get teh resources
+    Resource[] resources = GetAll(url, context);
+    entities = new Entity[resources.length];
+    
+    for(int i = 0; i < resources.length; i++)
+      entities[i] = new Entity(resources[i]);
+    
+    return entities;
+  }
+  
+  public Detail[] getDetails()
+  {
+    /*
+   // Get the URL for entities
+    Detail d = new Detail();
+    String url = d.getFullPath();
+    // Prepare a condition for it
+    NameValuePair[] context  = {new NameValuePair("database_id", 
+                                  Integer.toString(this.fromURLToID(this.url())))};
+    
+    Detail[] details = null;
+    
+    // Get teh resources
+    Resource[] resources = GetAll(url, context);
+    details = new Detail[resources.length];
+    
+    for(int i = 0; i < resources.length; i++)
+      details[i] = new Detail(resources[i]);
+    
+    return details;*/
+    return null;
+  }
+  
+          
   // </editor-fold>
 }

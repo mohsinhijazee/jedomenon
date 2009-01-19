@@ -8,7 +8,6 @@ package it.zeropoint.jedomenon.rest;
 import it.zeropoint.jedomenon.rest.exceptions.ResourceNotFound;
 import it.zeropoint.jedomenon.rest.exceptions.RestException;
 import java.io.IOException;
-import java.util.ArrayList;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpException;
 import org.apache.commons.httpclient.HttpMethod;
@@ -31,7 +30,7 @@ import org.json.JSONObject;
 
 public class Resource {
   
-  protected static String baseURL;
+  protected static String baseURL = "http://localhost:3000";
   protected static String format = "json";
   protected String path;
   protected JSONObject resource;
@@ -124,6 +123,20 @@ public class Resource {
   public String getFullPath()
   {
     return baseURL + path + "." + format;
+  }
+  
+  public int fromURLToID(String url)
+  {
+    
+     int last_dot = url.lastIndexOf(".");
+     int last_slash = url.lastIndexOf("/");
+     String id = url.substring(last_slash + 1, last_dot);
+     return Integer.parseInt(id);
+  }
+  
+  public String fromIDToURL(int id)
+  {
+    return baseURL + path + "/" + Integer.toString(id) + "." + format;
   }
   
     /**
@@ -335,6 +348,11 @@ public class Resource {
    */
   protected Resource[] GetAll(NameValuePair[] context) throws IOException, RestException, JSONException
   {
+    return GetAll(this.getFullPath(), context);
+  }
+  
+  protected Resource[] GetAll(String url, NameValuePair[] context) throws IOException, RestException, JSONException
+  {
     // Excute the method
     GetMethod method = (GetMethod) executeMethod(this.getFullPath(), "GET", context);
     Resource[] resource_list = null;
@@ -380,7 +398,7 @@ public class Resource {
    * Would PUT this object to remove server
    * @return reference to itself
    */
-  public JSONObject doPut() throws IOException, RestException, JSONException
+  public Resource doPut() throws IOException, RestException, JSONException
   {
     // {new NameValuePair("database", this.resource.toString())};
     NameValuePair[] data = getPostData();
@@ -391,19 +409,24 @@ public class Resource {
       
     this.resource = new JSONObject(new String(method.getResponseBody()));
     method.releaseConnection();
-    return this.resource;
+    return this;
       
     
   }
   
-  /**
-   * Internal DELETE method takes into considertation the lock versino as well
-   * @param url
-   * @param lock_version
-   * @return
-   */
-  public String doDelete(String url, NameValuePair[] lock_version) throws IOException, RestException
-  {
+
+  protected String doDeleteInternal(String url) throws IOException, RestException
+  { 
+    NameValuePair[] lock_version = null;
+    
+    if(this.resource.has("lock_version"))
+    {
+      lock_version = new NameValuePair[1];
+      lock_version[0] = new NameValuePair("lock_version", 
+              Integer.toString(this.resource.optInt("lock_version")));
+    }
+    
+    
     DeleteMethod method = (DeleteMethod)executeMethod(url, "DELETE", lock_version);
     reportPossibleException(method);
     String response = new String(method.getResponseBody());
@@ -418,40 +441,24 @@ public class Resource {
    */
   public boolean doDelete() throws IOException, RestException
   {
-    NameValuePair[] lock_version = null;
-    
-    if(this.resource.has("lock_version"))
-    {
-      lock_version = new NameValuePair[1];
-      lock_version[0] = new NameValuePair("lock_version", 
-              Integer.toString(this.resource.optInt("lock_version")));
-    }
-    
-      
-    String response = doDelete(this.url(), lock_version);
-    
-    return response.equalsIgnoreCase("OK") ? true : false;
-    
+    String response = doDeleteInternal(this.url());
+    return response.equalsIgnoreCase("\"deleted\"") ? true : false;
   }
   
   public boolean doDelete(int id) throws IOException, RestException
   {
     String url = baseURL + path + "/" + id + "." + format;
-    return doDelete(url);
+    String response = doDeleteInternal(url);
+    return response.equalsIgnoreCase("\"deleted\"") ? true : false;
   }
   
-  /**
-   * Performs DELETE on the resource of the given URL
-   * @param url URL of the resource
-   * @return true if succeeds false otherwise
-   * @throws java.io.IOException
-   * @throws it.zeropoint.jedomenon.rest.exceptions.RestException
-   */
   public boolean doDelete(String url) throws IOException, RestException
   {
-    String response  = doDelete(url, null);
-    return response.equalsIgnoreCase("OK") ? true : false;
+    String response = doDeleteInternal(url);
+    return response.equalsIgnoreCase("\"deleted\"") ? true : false;
   }
+  
+
   
   /**
    * Posts the current object to Dedomenon
@@ -460,7 +467,7 @@ public class Resource {
    * @throws org.jsonResource.JSONException
    * @throws it.zeropoint.jedomenon.rest.exceptions.RestException
    */
-  public JSONObject doPost() throws IOException, JSONException, RestException
+  public Resource doPost() throws IOException, JSONException, RestException
   {
     NameValuePair[] data = getPostData();
     PostMethod method = null;
@@ -475,7 +482,7 @@ public class Resource {
     method.releaseConnection();
     this.resource = fromURL(array.getString(0), null);
     method.releaseConnection();
-    return this.resource;
+    return this;
   }
   
   
