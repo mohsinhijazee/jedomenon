@@ -5,6 +5,7 @@
 
 package it.zeropoint.jedomenon;
 import it.zeropoint.jedomenon.gui.MainWindow;
+import it.zeropoint.jedomenon.rest.Resource;
 
 /**
  *
@@ -18,6 +19,7 @@ public class Main {
    * @param args the command line arguments
    */
   public static void main(String args[]) {
+    Resource.setBaseURL("http://localhost:3000");
     java.awt.EventQueue.invokeLater(new Runnable() {
       public void run() {
         new MainWindow().setVisible(true);
