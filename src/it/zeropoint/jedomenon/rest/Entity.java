@@ -188,6 +188,16 @@ public class Entity extends Resource {
   
   // <editor-fold defaultstate="collapsed" desc="Specific Methods"> 
   
+  public String getName() throws JSONException
+  {
+    return (String)this.getAttribute("name");
+  }
+  
+  public void setName(String name) throws JSONException
+  {
+    this.setAttribute("name", name);
+  }
+  
   public String getDatabaseURL() throws JSONException
   {
     return (String) this.getAttribute("database_url");
