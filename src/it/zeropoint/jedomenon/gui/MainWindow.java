@@ -7,6 +7,7 @@
 package it.zeropoint.jedomenon.gui;
 import it.zeropoint.jedomenon.rest.Database;
 import it.zeropoint.jedomenon.rest.Database;
+import it.zeropoint.jedomenon.rest.Detail;
 import it.zeropoint.jedomenon.rest.Entity;
 import it.zeropoint.jedomenon.rest.Resource;
 import java.util.ArrayList;
@@ -85,6 +86,11 @@ public class MainWindow extends javax.swing.JFrame {
     });
 
     jButton2.setText("GET /details.json");
+    jButton2.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(java.awt.event.ActionEvent evt) {
+        jButton2ActionPerformed(evt);
+      }
+    });
 
     javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
     getContentPane().setLayout(layout);
@@ -260,6 +266,7 @@ public class MainWindow extends javax.swing.JFrame {
       Database d = new Database(6);
       Entity[] entities = d.getEntities();
       
+      
     }
     catch(Exception e)
       {
@@ -267,6 +274,27 @@ public class MainWindow extends javax.swing.JFrame {
         e.printStackTrace();
       }
   }//GEN-LAST:event_jButton1ActionPerformed
+
+  private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    // TODO add your handling code here:
+    try
+    {
+      Resource.setBaseURL("http://localhost:3000");
+      Database d = new Database(6);
+      Detail[] details = d.getDetails();
+      String json = "";
+      for(int i = 0; i < details.length; i++)
+        json += details[i].toJSON(2) + "\n";
+      
+      JOptionPane.showMessageDialog(this, json);
+              
+    }
+    catch(Exception e)
+    {
+      JOptionPane.showMessageDialog(this, e);
+      e.printStackTrace();
+    }
+  }//GEN-LAST:event_jButton2ActionPerformed
   
   
   // Variables declaration - do not modify//GEN-BEGIN:variables
