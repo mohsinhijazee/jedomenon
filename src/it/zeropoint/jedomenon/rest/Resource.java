@@ -354,7 +354,7 @@ public class Resource {
   protected Resource[] GetAll(String url, NameValuePair[] context) throws IOException, RestException, JSONException
   {
     // Excute the method
-    GetMethod method = (GetMethod) executeMethod(this.getFullPath(), "GET", context);
+    GetMethod method = (GetMethod) executeMethod(url, "GET", context);
     Resource[] resource_list = null;
     
     
