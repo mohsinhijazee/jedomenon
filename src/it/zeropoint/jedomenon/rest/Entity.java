@@ -25,7 +25,7 @@ import org.json.JSONObject;
  */
 public class Entity extends Resource {
 
-   // <editor-fold defaultstate="collapsed" desc="Constructors"> 
+  // <editor-fold defaultstate="collapsed" desc="Constructors"> 
   public Entity() throws JSONException
   {
     this.initialize(null);
@@ -87,6 +87,103 @@ public class Entity extends Resource {
     return data;
   } 
   
+    // <editor-fold defaultstate="collapsed" desc="HTTP Methods">
+      // <editor-fold defaultstate="collapsed" desc="GET">
+  @Override
+  public Entity doGet() throws JSONException, IOException, RestException
+  {
+    super.doGet();
+    return this;
+  }
+  
+  @Override
+  public Entity doGet(int id) throws JSONException, IOException, RestException
+  {
+    super.doGet(id);
+    return this;
+  }
+  
+  @Override
+  public Entity doGet(String url) throws JSONException, IOException, RestException
+  {
+    super.doGet(url);
+    return this;
+  }
+      // </editor-fold>
+  
+      // <editor-fold defaultstate="collapsed" desc="GET ALL">
+  /**
+   * Get all the entities of the database to which this entity belongs to
+   * @return Array of Entity objects
+   */
+  @Override
+  public Entity[] doGetAll() throws JSONException, IOException, RestException
+  {
+    return this.doGetAll(this.getDatabaseURL());
+  }
+  
+  /**
+   * Get all entities of the given database id
+   * @param database_id ID of the database
+   * @return Array of Entity objects
+   * @throws java.io.IOException
+   * @throws it.zeropoint.jedomenon.rest.exceptions.RestException
+   * @throws org.json.JSONException
+   */
+  public Entity[] doGetAll(int database_id) throws IOException, RestException, JSONException
+  {
+    NameValuePair[] context = {new NameValuePair("database_id", Integer.toString(database_id))};
+    Resource[] resources = super.GetAll(context);
+    Entity[] entities = new Entity[resources.length];
+    
+    for(int i = 0; i < resources.length; i++)
+      entities[i] = new Entity(resources[i]);
+    
+    return entities;
+  }
+  
+  /**
+   * Get all the entities of the database whose URL is given as parameter
+   * @param database_url
+   * @return Array of Entity objects that belong to the given Database
+   */
+  public Entity[] doGetAll(String database_url) throws IOException, RestException, JSONException
+  {
+    return doGetAll(fromURLToID(database_url));
+  }
+
+  /**
+   * Get all the entities of the given Database
+   * @param database
+   * @return
+   */
+  public Entity[] doGetAll(Database database) throws IOException, RestException, JSONException
+  {
+    return doGetAll(database.url());
+  }
+      // </editor-fold>
+  
+      // <editor-fold defaultstate="collapsed" desc="POST">
+  @Override
+  public Entity doPost() throws IOException, JSONException, RestException
+  {
+    super.doPost();
+    return this;
+  }
+     // </editor-fold> POST
+  
+      // <editor-fold defaultstate="collapsed" desc="PUT">
+  @Override
+  public Entity doPut() throws IOException, RestException, JSONException
+  {
+    super.doPut();
+    return this;
+  }
+      // </editor-fold>
+  
+  
+    // </editor-fold> HTTP Methods
+  
   //</editor-fold> Overrides
   
   // <editor-fold defaultstate="collapsed" desc="Specific Methods"> 
@@ -126,9 +223,23 @@ public class Entity extends Resource {
     this.setAttribute("database_url", database.url());
   }
   
-  public Detail[] getDetails()
+  public Detail[] getDetails() throws JSONException, IOException, RestException
   {
-    return null;
+    Detail d = new Detail();
+    String url = d.getFullPath();
+    // Prepare a condition for it
+    NameValuePair[] context  = {new NameValuePair("entity_id", 
+                                  Integer.toString(this.fromURLToID(this.url())))};
+    
+    Detail[] details = null;
+    // Get teh resources
+    Resource[] resources = GetAll(url, context);
+    details = new Detail[resources.length];
+    
+    for(int i = 0; i < resources.length; i++)
+      details[i] = new Detail(resources[i]);
+    
+    return details;
   }
   
   public Resource[] getRelations()
