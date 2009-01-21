@@ -12,6 +12,7 @@ import it.zeropoint.jedomenon.rest.Entity;
 import it.zeropoint.jedomenon.rest.Resource;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
+import org.json.JSONException;
 
 /**
  *
@@ -44,6 +45,8 @@ public class MainWindow extends javax.swing.JFrame {
     postEntityButton = new javax.swing.JButton();
     putEntityButton = new javax.swing.JButton();
     deleteEntityButton = new javax.swing.JButton();
+    jButton1 = new javax.swing.JButton();
+    jButton2 = new javax.swing.JButton();
 
     setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
     setTitle("Jedomenon");
@@ -97,20 +100,49 @@ public class MainWindow extends javax.swing.JFrame {
       }
     });
 
-    getEntityButton.setText("GET /entities/6.json");
+    getEntityButton.setText("GET /entities/101.json");
     getEntityButton.addActionListener(new java.awt.event.ActionListener() {
       public void actionPerformed(java.awt.event.ActionEvent evt) {
         getEntityButtonActionPerformed(evt);
       }
     });
 
-    getEntitiesButton.setText("jButton4");
+    getEntitiesButton.setText("GET /entities.json");
+    getEntitiesButton.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(java.awt.event.ActionEvent evt) {
+        getEntitiesButtonActionPerformed(evt);
+      }
+    });
 
-    postEntityButton.setText("jButton5");
+    postEntityButton.setText("POST /entities.json");
+    postEntityButton.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(java.awt.event.ActionEvent evt) {
+        postEntityButtonActionPerformed(evt);
+      }
+    });
 
-    putEntityButton.setText("jButton6");
+    putEntityButton.setText("PUT /entities/101.json");
+    putEntityButton.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(java.awt.event.ActionEvent evt) {
+        putEntityButtonActionPerformed(evt);
+      }
+    });
 
-    deleteEntityButton.setText("jButton7");
+    deleteEntityButton.setText("DELETE /entities/101.json");
+    deleteEntityButton.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(java.awt.event.ActionEvent evt) {
+        deleteEntityButtonActionPerformed(evt);
+      }
+    });
+
+    jButton1.setText("GET Details");
+    jButton1.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(java.awt.event.ActionEvent evt) {
+        jButton1ActionPerformed(evt);
+      }
+    });
+
+    jButton2.setText("jButton2");
 
     javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
     getContentPane().setLayout(layout);
@@ -127,21 +159,27 @@ public class MainWindow extends javax.swing.JFrame {
           .addComponent(putDatabaseButton, javax.swing.GroupLayout.DEFAULT_SIZE, 177, Short.MAX_VALUE)
           .addComponent(deleteDatabaseButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-          .addComponent(getEntityButton)
-          .addComponent(getEntitiesButton)
-          .addComponent(postEntityButton)
-          .addComponent(putEntityButton)
-          .addComponent(deleteEntityButton))
-        .addGap(287, 287, 287))
+        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+          .addComponent(getEntityButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+          .addComponent(deleteEntityButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+          .addComponent(getEntitiesButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+          .addComponent(postEntityButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+          .addComponent(putEntityButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+          .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+          .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        .addGap(264, 264, 264))
     );
     layout.setVerticalGroup(
       layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
       .addGroup(layout.createSequentialGroup()
         .addContainerGap()
-        .addComponent(getDatabaseEntitiesButton)
+        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+          .addComponent(getDatabaseEntitiesButton)
+          .addComponent(jButton2))
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-        .addComponent(getDatabaseDetails)
+        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+          .addComponent(getDatabaseDetails)
+          .addComponent(jButton1))
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
           .addComponent(getDatabaseButton)
@@ -332,9 +370,145 @@ public class MainWindow extends javax.swing.JFrame {
 }//GEN-LAST:event_getDatabaseDetailsActionPerformed
 
   private void getEntityButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_getEntityButtonActionPerformed
-    
+
+    try
+    {
+     Entity e1 = new Entity(101);
+     Entity e2 = new Entity("http://localhost:3000/entities/101.json");
+     String json1 = e1.toJSON(2);
+     String json2 = e2.toJSON(2);
+     System.out.print(json1);
+     System.out.print(json2);
+     
+     JOptionPane.showMessageDialog(this, json1);
+     JOptionPane.showMessageDialog(this, json2);
+      
+    }
+    catch(Exception e)
+    {
+      JOptionPane.showMessageDialog(this, e);
+      e.printStackTrace();
+    }
+        
   }//GEN-LAST:event_getEntityButtonActionPerformed
+
+  private void getEntitiesButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_getEntitiesButtonActionPerformed
+    // TODO add your handling code here:
+    try
+    {
+      Entity e = new Entity(101);
+      Database d = new Database(6);
+      
+      Entity[] entities = e.doGetAll();
+      JOptionPane.showMessageDialog(this, toJSON(entities, 2)); 
+      
+      entities = e.doGetAll(6);
+      JOptionPane.showMessageDialog(this, toJSON(entities, 2)); 
+      
+      entities = e.doGetAll("http://localhost:3000/databases/6.json");
+      JOptionPane.showMessageDialog(this, toJSON(entities, 2)); 
+      
+      entities = e.doGetAll(d);
+      JOptionPane.showMessageDialog(this, toJSON(entities, 2)); 
+      System.out.print(toJSON(entities, 2));
+      
+    }
+    catch(Exception e)
+    {
+      JOptionPane.showMessageDialog(this, e);
+      e.printStackTrace();
+    }
+  }//GEN-LAST:event_getEntitiesButtonActionPerformed
+
+  private void postEntityButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_postEntityButtonActionPerformed
+    // TODO add your handling code here:
+    try
+    {
+      Database database = new Database(6);
+      Entity e = new Entity();
+      e.setName("Newly created entityy");
+      e.setDatbase(database);
+      String json = e.toJSON(2);
+      String msg = "Before POST: \n" + json;
+      JOptionPane.showMessageDialog(this, msg);
+      
+      
+      e.doPost();
+      json = e.toJSON(2);
+      msg = "After POST:\n" + json;
+      System.out.print(json);
+      JOptionPane.showMessageDialog(this, msg);
+      
+      
+    }
+    catch(Exception e)
+    {
+      JOptionPane.showMessageDialog(this, e);
+      e.printStackTrace();
+    }       
+  }//GEN-LAST:event_postEntityButtonActionPerformed
+
+  private void putEntityButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_putEntityButtonActionPerformed
+    try
+    {
+      Entity e = new Entity(101);
+      String json = e.toJSON(2);
+      String msg = "BEFORE PUT:\n" + json;
+      JOptionPane.showMessageDialog(this, msg);
+      
+      e.setName("PUT CALL VIA JAVA LIB");
+      e.doPut();
+      
+      json = e.toJSON(2);
+      msg = "After PUT:\n" + json;
+      JOptionPane.showMessageDialog(this, msg);
+            
+    }
+    catch(Exception e)
+    {
+      JOptionPane.showMessageDialog(this, e);
+      e.printStackTrace();
+    }       
+  }//GEN-LAST:event_putEntityButtonActionPerformed
+
+  private void deleteEntityButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteEntityButtonActionPerformed
+    try
+    {
+      Entity e = new Entity(101);
+      
+      if(e.doDelete())
+        JOptionPane.showMessageDialog(this, "DELTEDD!");
+      else
+        JOptionPane.showMessageDialog(this, "Failed...");
+      
+    }
+    catch(Exception e)
+    {
+      JOptionPane.showMessageDialog(this, e);
+      e.printStackTrace();
+    }       
+  }//GEN-LAST:event_deleteEntityButtonActionPerformed
+
+  private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    // TODO add your handling code here:
+    try
+    {
+      
+    }
+    catch(Exception e)
+    {
+      
+    }
+  }//GEN-LAST:event_jButton1ActionPerformed
   
+  private String toJSON(Resource[] resources, int indent_factor) throws JSONException
+  {
+    String json = "";
+    for(int i = 0; i < resources.length; i++)
+      json += resources[i].toJSON(indent_factor) + "\n";
+    
+    return json;
+  }
   
   // Variables declaration - do not modify//GEN-BEGIN:variables
   private javax.swing.JButton deleteDatabaseButton;
@@ -345,6 +519,8 @@ public class MainWindow extends javax.swing.JFrame {
   private javax.swing.JButton getDatabaseEntitiesButton;
   private javax.swing.JButton getEntitiesButton;
   private javax.swing.JButton getEntityButton;
+  private javax.swing.JButton jButton1;
+  private javax.swing.JButton jButton2;
   private javax.swing.JButton postDatabaseButton;
   private javax.swing.JButton postEntityButton;
   private javax.swing.JButton putDatabaseButton;

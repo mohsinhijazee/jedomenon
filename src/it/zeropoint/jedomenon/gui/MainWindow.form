@@ -34,14 +34,16 @@
                   <Component id="deleteDatabaseButton" alignment="0" max="32767" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="getEntityButton" min="-2" max="-2" attributes="0"/>
-                  <Component id="getEntitiesButton" min="-2" max="-2" attributes="0"/>
-                  <Component id="postEntityButton" min="-2" max="-2" attributes="0"/>
-                  <Component id="putEntityButton" min="-2" max="-2" attributes="0"/>
-                  <Component id="deleteEntityButton" min="-2" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                  <Component id="getEntityButton" alignment="0" max="32767" attributes="1"/>
+                  <Component id="deleteEntityButton" alignment="0" max="32767" attributes="1"/>
+                  <Component id="getEntitiesButton" alignment="0" max="32767" attributes="1"/>
+                  <Component id="postEntityButton" alignment="0" max="32767" attributes="1"/>
+                  <Component id="putEntityButton" alignment="0" max="32767" attributes="1"/>
+                  <Component id="jButton2" alignment="0" max="32767" attributes="1"/>
+                  <Component id="jButton1" alignment="0" max="32767" attributes="1"/>
               </Group>
-              <EmptySpace min="-2" pref="287" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="264" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -49,9 +51,15 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="getDatabaseEntitiesButton" min="-2" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="getDatabaseEntitiesButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jButton2" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="getDatabaseDetails" min="-2" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="getDatabaseDetails" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jButton1" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="getDatabaseButton" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -141,7 +149,7 @@
     </Component>
     <Component class="javax.swing.JButton" name="getEntityButton">
       <Properties>
-        <Property name="text" type="java.lang.String" value="GET /entities/6.json"/>
+        <Property name="text" type="java.lang.String" value="GET /entities/101.json"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="getEntityButtonActionPerformed"/>
@@ -149,22 +157,47 @@
     </Component>
     <Component class="javax.swing.JButton" name="getEntitiesButton">
       <Properties>
-        <Property name="text" type="java.lang.String" value="jButton4"/>
+        <Property name="text" type="java.lang.String" value="GET /entities.json"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="getEntitiesButtonActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="postEntityButton">
       <Properties>
-        <Property name="text" type="java.lang.String" value="jButton5"/>
+        <Property name="text" type="java.lang.String" value="POST /entities.json"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="postEntityButtonActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="putEntityButton">
       <Properties>
-        <Property name="text" type="java.lang.String" value="jButton6"/>
+        <Property name="text" type="java.lang.String" value="PUT /entities/101.json"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="putEntityButtonActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="deleteEntityButton">
       <Properties>
-        <Property name="text" type="java.lang.String" value="jButton7"/>
+        <Property name="text" type="java.lang.String" value="DELETE /entities/101.json"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="deleteEntityButtonActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="jButton1">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="GET Details"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton1ActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="jButton2">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="jButton2"/>
       </Properties>
     </Component>
   </SubComponents>
