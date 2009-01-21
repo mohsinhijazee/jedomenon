@@ -13,17 +13,35 @@ import org.json.JSONObject;
 
 /**
  * Represents a Dedomenon Database
+ * Has following attributes:
+ * 
+ *   * url
+ *   * account_url
+ *   * name
+ *   * lock_version
+ * 
  * @author Mohsin Hijazee
  */
 public class Database extends Resource
 {
   
   // <editor-fold defaultstate="collapsed" desc="Constructors"> 
+  /**
+   * Default contructor. Initializes all the fields with empty strings.
+   * @throws org.json.JSONException
+   */
   public Database() throws JSONException
   {
     this.initialize(null);
   }
   
+  /**
+   * Creates a database object corresponding to the given ID
+   * @param id
+   * @throws java.io.IOException
+   * @throws it.zeropoint.jedomenon.rest.exceptions.RestException
+   * @throws org.json.JSONException
+   */
   public Database(int id) throws IOException, RestException, JSONException
   {
     
@@ -31,16 +49,32 @@ public class Database extends Resource
     
   }
   
+  /**
+   * Creates a Database object from the given URL
+   * @param url
+   * @throws java.io.IOException
+   * @throws it.zeropoint.jedomenon.rest.exceptions.RestException
+   * @throws org.json.JSONException
+   */
   public Database(String url) throws IOException, RestException, JSONException
   {
    this.initialize(this.fromURL(url, null));
   }
   
+  /**
+   * Creates a Database object from the given JSON
+   * @param json
+   * @throws org.json.JSONException
+   */
   public Database(JSONObject json) throws JSONException
   {
     this.initialize(json);
   }
   
+  /**
+   * Creates a Database object from the given Resource
+   * @param resource
+   */
   public Database(Resource resource)
   {
     super(resource);
@@ -52,6 +86,13 @@ public class Database extends Resource
   
   // <editor-fold defaultstate="collapsed" desc="Overrides"> 
   
+  /**
+   * Initializes the database object with attributes.
+   * 
+   * Also sets the path of the Database 
+   * @param jsonResource
+   * @throws org.json.JSONException
+   */
   @Override
   protected void initialize(JSONObject jsonResource) throws JSONException
   {
@@ -71,6 +112,14 @@ public class Database extends Resource
       this.resource = jsonResource;
       
   }
+  
+  /**
+   * Returns the POST data as an array of NameValuePair
+   * 
+   * Data is the JSONObject turned into JSON string and put under
+   * field name of "database"
+   * @return
+   */
   @Override
   protected NameValuePair[] getPostData()
   {
@@ -171,6 +220,13 @@ public class Database extends Resource
   }
   
   
+  /**
+   * Gets all the Entity objects of this Database
+   * @return Array of Entity objects
+   * @throws org.json.JSONException
+   * @throws java.io.IOException
+   * @throws it.zeropoint.jedomenon.rest.exceptions.RestException
+   */
   public Entity[] getEntities() throws JSONException, IOException, RestException
   {
     // Get the URL for entities
@@ -191,10 +247,16 @@ public class Database extends Resource
     return entities;
   }
   
-  public Detail[] getDetails()
+  /**
+   * Get all the details of this Database
+   * @return Array of Detail objects
+   * @throws org.json.JSONException
+   * @throws java.io.IOException
+   * @throws it.zeropoint.jedomenon.rest.exceptions.RestException
+   */
+  public Detail[] getDetails() throws JSONException, IOException, RestException
   {
-    /*
-   // Get the URL for entities
+        // Get the URL for entities
     Detail d = new Detail();
     String url = d.getFullPath();
     // Prepare a condition for it
@@ -202,7 +264,6 @@ public class Database extends Resource
                                   Integer.toString(this.fromURLToID(this.url())))};
     
     Detail[] details = null;
-    
     // Get teh resources
     Resource[] resources = GetAll(url, context);
     details = new Detail[resources.length];
@@ -210,8 +271,7 @@ public class Database extends Resource
     for(int i = 0; i < resources.length; i++)
       details[i] = new Detail(resources[i]);
     
-    return details;*/
-    return null;
+    return details;
   }
   
           
