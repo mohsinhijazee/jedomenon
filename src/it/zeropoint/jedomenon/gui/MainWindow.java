@@ -33,64 +33,84 @@ public class MainWindow extends javax.swing.JFrame {
   private void initComponents() {
 
     getDatabaseButton = new javax.swing.JButton();
-    getAllDatabases = new javax.swing.JButton();
-    deleteDatabase = new javax.swing.JButton();
-    updateButton = new javax.swing.JButton();
+    getAllDatabasesButton = new javax.swing.JButton();
+    deleteDatabaseButton = new javax.swing.JButton();
+    putDatabaseButton = new javax.swing.JButton();
     postDatabaseButton = new javax.swing.JButton();
-    jButton1 = new javax.swing.JButton();
-    jButton2 = new javax.swing.JButton();
+    getDatabaseEntitiesButton = new javax.swing.JButton();
+    getDatabaseDetails = new javax.swing.JButton();
+    getEntityButton = new javax.swing.JButton();
+    getEntitiesButton = new javax.swing.JButton();
+    postEntityButton = new javax.swing.JButton();
+    putEntityButton = new javax.swing.JButton();
+    deleteEntityButton = new javax.swing.JButton();
 
     setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-    setTitle("Celesus Convertor");
+    setTitle("Jedomenon");
 
-    getDatabaseButton.setText("GET");
+    getDatabaseButton.setText("GET /database/6.json");
     getDatabaseButton.addActionListener(new java.awt.event.ActionListener() {
       public void actionPerformed(java.awt.event.ActionEvent evt) {
         getDatabaseButtonActionPerformed(evt);
       }
     });
 
-    getAllDatabases.setText("GETALL");
-    getAllDatabases.addActionListener(new java.awt.event.ActionListener() {
+    getAllDatabasesButton.setText("GET /databases.json");
+    getAllDatabasesButton.addActionListener(new java.awt.event.ActionListener() {
       public void actionPerformed(java.awt.event.ActionEvent evt) {
-        getAllDatabasesActionPerformed(evt);
+        getAllDatabasesButtonActionPerformed(evt);
       }
     });
 
-    deleteDatabase.setText("DELETE");
-    deleteDatabase.addActionListener(new java.awt.event.ActionListener() {
+    deleteDatabaseButton.setText("DELETE /databases/6.json");
+    deleteDatabaseButton.addActionListener(new java.awt.event.ActionListener() {
       public void actionPerformed(java.awt.event.ActionEvent evt) {
-        deleteDatabaseActionPerformed(evt);
+        deleteDatabaseButtonActionPerformed(evt);
       }
     });
 
-    updateButton.setText("PUT");
-    updateButton.addActionListener(new java.awt.event.ActionListener() {
+    putDatabaseButton.setText("PUT /databases/6.json");
+    putDatabaseButton.addActionListener(new java.awt.event.ActionListener() {
       public void actionPerformed(java.awt.event.ActionEvent evt) {
-        updateButtonActionPerformed(evt);
+        putDatabaseButtonActionPerformed(evt);
       }
     });
 
-    postDatabaseButton.setText("POST");
+    postDatabaseButton.setText("POST /databases.json");
     postDatabaseButton.addActionListener(new java.awt.event.ActionListener() {
       public void actionPerformed(java.awt.event.ActionEvent evt) {
         postDatabaseButtonActionPerformed(evt);
       }
     });
 
-    jButton1.setText("GET /entities.json");
-    jButton1.addActionListener(new java.awt.event.ActionListener() {
+    getDatabaseEntitiesButton.setText("GET /entities.json");
+    getDatabaseEntitiesButton.addActionListener(new java.awt.event.ActionListener() {
       public void actionPerformed(java.awt.event.ActionEvent evt) {
-        jButton1ActionPerformed(evt);
+        getDatabaseEntitiesButtonActionPerformed(evt);
       }
     });
 
-    jButton2.setText("GET /details.json");
-    jButton2.addActionListener(new java.awt.event.ActionListener() {
+    getDatabaseDetails.setText("GET /details.json");
+    getDatabaseDetails.addActionListener(new java.awt.event.ActionListener() {
       public void actionPerformed(java.awt.event.ActionEvent evt) {
-        jButton2ActionPerformed(evt);
+        getDatabaseDetailsActionPerformed(evt);
       }
     });
+
+    getEntityButton.setText("GET /entities/6.json");
+    getEntityButton.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(java.awt.event.ActionEvent evt) {
+        getEntityButtonActionPerformed(evt);
+      }
+    });
+
+    getEntitiesButton.setText("jButton4");
+
+    postEntityButton.setText("jButton5");
+
+    putEntityButton.setText("jButton6");
+
+    deleteEntityButton.setText("jButton7");
 
     javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
     getContentPane().setLayout(layout);
@@ -98,45 +118,51 @@ public class MainWindow extends javax.swing.JFrame {
       layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
       .addGroup(layout.createSequentialGroup()
         .addContainerGap()
-        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-          .addComponent(deleteDatabase)
-          .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(getAllDatabases)
-            .addComponent(getDatabaseButton)))
-        .addGap(144, 144, 144)
         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-          .addGroup(layout.createSequentialGroup()
-            .addComponent(jButton2)
-            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-              .addGroup(layout.createSequentialGroup()
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(updateButton)
-                .addGap(85, 85, 85))
-              .addGroup(layout.createSequentialGroup()
-                .addGap(55, 55, 55)
-                .addComponent(postDatabaseButton))))
-          .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-            .addComponent(jButton1)
-            .addGap(62, 62, 62))))
+          .addComponent(getDatabaseEntitiesButton, javax.swing.GroupLayout.DEFAULT_SIZE, 177, Short.MAX_VALUE)
+          .addComponent(getDatabaseDetails, javax.swing.GroupLayout.DEFAULT_SIZE, 177, Short.MAX_VALUE)
+          .addComponent(getDatabaseButton, javax.swing.GroupLayout.DEFAULT_SIZE, 177, Short.MAX_VALUE)
+          .addComponent(getAllDatabasesButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 177, Short.MAX_VALUE)
+          .addComponent(postDatabaseButton, javax.swing.GroupLayout.DEFAULT_SIZE, 177, Short.MAX_VALUE)
+          .addComponent(putDatabaseButton, javax.swing.GroupLayout.DEFAULT_SIZE, 177, Short.MAX_VALUE)
+          .addComponent(deleteDatabaseButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+          .addComponent(getEntityButton)
+          .addComponent(getEntitiesButton)
+          .addComponent(postEntityButton)
+          .addComponent(putEntityButton)
+          .addComponent(deleteEntityButton))
+        .addGap(287, 287, 287))
     );
     layout.setVerticalGroup(
       layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
       .addGroup(layout.createSequentialGroup()
-        .addGap(43, 43, 43)
-        .addComponent(jButton1)
-        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 43, Short.MAX_VALUE)
+        .addContainerGap()
+        .addComponent(getDatabaseEntitiesButton)
+        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+        .addComponent(getDatabaseDetails)
+        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
           .addComponent(getDatabaseButton)
-          .addComponent(postDatabaseButton)
-          .addComponent(jButton2))
-        .addGap(18, 18, 18)
-        .addComponent(getAllDatabases)
-        .addGap(42, 42, 42)
+          .addComponent(getEntityButton))
+        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-          .addComponent(deleteDatabase)
-          .addComponent(updateButton))
-        .addGap(38, 38, 38))
+          .addComponent(getAllDatabasesButton)
+          .addComponent(getEntitiesButton))
+        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+          .addComponent(postDatabaseButton)
+          .addComponent(postEntityButton))
+        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+          .addComponent(putDatabaseButton)
+          .addComponent(putEntityButton))
+        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+          .addComponent(deleteDatabaseButton)
+          .addComponent(deleteEntityButton))
+        .addContainerGap(49, Short.MAX_VALUE))
     );
 
     pack();
@@ -145,11 +171,12 @@ public class MainWindow extends javax.swing.JFrame {
   private void getDatabaseButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_getDatabaseButtonActionPerformed
     try
     {
-      Resource.setBaseURL("http://localhost:3000");
+      
       Database d = new Database(6);
       
       String json = d.toJSON(2);
       String msg = "Database of ID 6:\n" + json;
+      System.out.print(json);
       JOptionPane.showMessageDialog(this, msg);
       
       d = null;
@@ -164,23 +191,23 @@ public class MainWindow extends javax.swing.JFrame {
     }
   }//GEN-LAST:event_getDatabaseButtonActionPerformed
 
-  private void getAllDatabasesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_getAllDatabasesActionPerformed
+  private void getAllDatabasesButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_getAllDatabasesButtonActionPerformed
     
 
-    Resource.setBaseURL("http://localhost:3000");
+    
     
     
     try
     {
       Database d = new Database();
       Database[]  a = d.doGetAll();
-      String msg = "GET ALL: Length = " + a.length + "\n";
+      String json = "";
       
       for(int i = 0; i < a.length; i++)
-      {
-        msg += "\n\n" + a[i].toJSON(2);
-      }
+        json += a[i].toJSON(2) + "\n";
       
+      System.out.print(json);
+      String msg = "Lenght of Database Array:" + a.length + "\n\n" + json;
       JOptionPane.showMessageDialog(this, msg);
     }
     catch(Exception e)
@@ -188,9 +215,9 @@ public class MainWindow extends javax.swing.JFrame {
       JOptionPane.showMessageDialog(this, e.toString());
     }
 
-  }//GEN-LAST:event_getAllDatabasesActionPerformed
+}//GEN-LAST:event_getAllDatabasesButtonActionPerformed
 
-  private void deleteDatabaseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteDatabaseActionPerformed
+  private void deleteDatabaseButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteDatabaseButtonActionPerformed
 
     try
     {
@@ -218,13 +245,13 @@ public class MainWindow extends javax.swing.JFrame {
       JOptionPane.showMessageDialog(this, e.toString());
     }
 
-  }//GEN-LAST:event_deleteDatabaseActionPerformed
+}//GEN-LAST:event_deleteDatabaseButtonActionPerformed
 
-  private void updateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateButtonActionPerformed
+  private void putDatabaseButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_putDatabaseButtonActionPerformed
    
     try
     {
-      Resource.setBaseURL("http://localhost:3000");
+      
       Database d = new Database(6);
       JOptionPane.showMessageDialog(this, "Before PUT:\n" + d.toJSON(2));
       d.setName("Updated BY JAVA!!!");
@@ -237,13 +264,13 @@ public class MainWindow extends javax.swing.JFrame {
       JOptionPane.showMessageDialog(this, e.toString());
     }
    
-  }//GEN-LAST:event_updateButtonActionPerformed
+}//GEN-LAST:event_putDatabaseButtonActionPerformed
 
   private void postDatabaseButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_postDatabaseButtonActionPerformed
     // TODO add your handling code here:
     try
     {
-      Resource.setBaseURL("http://localhost:3000");
+
       Database d = new Database();
       d.setName("MY NEWLY JAVA DATABASE");
       d.setAccountURL("http://localhost:3000/accounts/1.json");
@@ -257,15 +284,22 @@ public class MainWindow extends javax.swing.JFrame {
     }
   }//GEN-LAST:event_postDatabaseButtonActionPerformed
 
-  private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+  private void getDatabaseEntitiesButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_getDatabaseEntitiesButtonActionPerformed
     // TODO add your handling code here:
     try
     {
-      String baseURL = "http://localhost:3000";
-      Resource.setBaseURL(baseURL);
+
       Database d = new Database(6);
       Entity[] entities = d.getEntities();
+      String json = "";
       
+      for(int i = 0; i < entities.length; i++)
+      {
+        json += entities[i].toJSON(2) + "\n";
+      }
+      
+      System.out.print(json);
+      JOptionPane.showMessageDialog(this, json);
       
     }
     catch(Exception e)
@@ -273,13 +307,13 @@ public class MainWindow extends javax.swing.JFrame {
         JOptionPane.showMessageDialog(this, e);
         e.printStackTrace();
       }
-  }//GEN-LAST:event_jButton1ActionPerformed
+}//GEN-LAST:event_getDatabaseEntitiesButtonActionPerformed
 
-  private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+  private void getDatabaseDetailsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_getDatabaseDetailsActionPerformed
     // TODO add your handling code here:
     try
     {
-      Resource.setBaseURL("http://localhost:3000");
+
       Database d = new Database(6);
       Detail[] details = d.getDetails();
       String json = "";
@@ -287,6 +321,7 @@ public class MainWindow extends javax.swing.JFrame {
         json += details[i].toJSON(2) + "\n";
       
       JOptionPane.showMessageDialog(this, json);
+      System.out.print(json);
               
     }
     catch(Exception e)
@@ -294,17 +329,26 @@ public class MainWindow extends javax.swing.JFrame {
       JOptionPane.showMessageDialog(this, e);
       e.printStackTrace();
     }
-  }//GEN-LAST:event_jButton2ActionPerformed
+}//GEN-LAST:event_getDatabaseDetailsActionPerformed
+
+  private void getEntityButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_getEntityButtonActionPerformed
+    
+  }//GEN-LAST:event_getEntityButtonActionPerformed
   
   
   // Variables declaration - do not modify//GEN-BEGIN:variables
-  private javax.swing.JButton deleteDatabase;
-  private javax.swing.JButton getAllDatabases;
+  private javax.swing.JButton deleteDatabaseButton;
+  private javax.swing.JButton deleteEntityButton;
+  private javax.swing.JButton getAllDatabasesButton;
   private javax.swing.JButton getDatabaseButton;
-  private javax.swing.JButton jButton1;
-  private javax.swing.JButton jButton2;
+  private javax.swing.JButton getDatabaseDetails;
+  private javax.swing.JButton getDatabaseEntitiesButton;
+  private javax.swing.JButton getEntitiesButton;
+  private javax.swing.JButton getEntityButton;
   private javax.swing.JButton postDatabaseButton;
-  private javax.swing.JButton updateButton;
+  private javax.swing.JButton postEntityButton;
+  private javax.swing.JButton putDatabaseButton;
+  private javax.swing.JButton putEntityButton;
   // End of variables declaration//GEN-END:variables
   
 }
