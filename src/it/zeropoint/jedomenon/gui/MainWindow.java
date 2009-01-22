@@ -45,8 +45,8 @@ public class MainWindow extends javax.swing.JFrame {
     postEntityButton = new javax.swing.JButton();
     putEntityButton = new javax.swing.JButton();
     deleteEntityButton = new javax.swing.JButton();
-    jButton1 = new javax.swing.JButton();
-    jButton2 = new javax.swing.JButton();
+    getDetailsButton = new javax.swing.JButton();
+    getInstances = new javax.swing.JButton();
 
     setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
     setTitle("Jedomenon");
@@ -135,14 +135,14 @@ public class MainWindow extends javax.swing.JFrame {
       }
     });
 
-    jButton1.setText("GET Details");
-    jButton1.addActionListener(new java.awt.event.ActionListener() {
+    getDetailsButton.setText("GET Details");
+    getDetailsButton.addActionListener(new java.awt.event.ActionListener() {
       public void actionPerformed(java.awt.event.ActionEvent evt) {
-        jButton1ActionPerformed(evt);
+        getDetailsButtonActionPerformed(evt);
       }
     });
 
-    jButton2.setText("jButton2");
+    getInstances.setText("GET Instances");
 
     javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
     getContentPane().setLayout(layout);
@@ -165,8 +165,8 @@ public class MainWindow extends javax.swing.JFrame {
           .addComponent(getEntitiesButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
           .addComponent(postEntityButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
           .addComponent(putEntityButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-          .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-          .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+          .addComponent(getInstances, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+          .addComponent(getDetailsButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         .addGap(264, 264, 264))
     );
     layout.setVerticalGroup(
@@ -175,11 +175,11 @@ public class MainWindow extends javax.swing.JFrame {
         .addContainerGap()
         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
           .addComponent(getDatabaseEntitiesButton)
-          .addComponent(jButton2))
+          .addComponent(getInstances))
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
           .addComponent(getDatabaseDetails)
-          .addComponent(jButton1))
+          .addComponent(getDetailsButton))
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
           .addComponent(getDatabaseButton)
@@ -489,17 +489,22 @@ public class MainWindow extends javax.swing.JFrame {
     }       
   }//GEN-LAST:event_deleteEntityButtonActionPerformed
 
-  private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+  private void getDetailsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_getDetailsButtonActionPerformed
     // TODO add your handling code here:
     try
     {
+      Entity e = new Entity(100) ;
+      Detail[] details = e.getDetails();
+      String json = toJSON(details, 2);
+      String msg = "Details:\n" + json;
       
+      JOptionPane.showMessageDialog(this, msg);
     }
     catch(Exception e)
     {
       
     }
-  }//GEN-LAST:event_jButton1ActionPerformed
+}//GEN-LAST:event_getDetailsButtonActionPerformed
   
   private String toJSON(Resource[] resources, int indent_factor) throws JSONException
   {
@@ -517,10 +522,10 @@ public class MainWindow extends javax.swing.JFrame {
   private javax.swing.JButton getDatabaseButton;
   private javax.swing.JButton getDatabaseDetails;
   private javax.swing.JButton getDatabaseEntitiesButton;
+  private javax.swing.JButton getDetailsButton;
   private javax.swing.JButton getEntitiesButton;
   private javax.swing.JButton getEntityButton;
-  private javax.swing.JButton jButton1;
-  private javax.swing.JButton jButton2;
+  private javax.swing.JButton getInstances;
   private javax.swing.JButton postDatabaseButton;
   private javax.swing.JButton postEntityButton;
   private javax.swing.JButton putDatabaseButton;

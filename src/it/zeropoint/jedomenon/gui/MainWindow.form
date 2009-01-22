@@ -40,8 +40,8 @@
                   <Component id="getEntitiesButton" alignment="0" max="32767" attributes="1"/>
                   <Component id="postEntityButton" alignment="0" max="32767" attributes="1"/>
                   <Component id="putEntityButton" alignment="0" max="32767" attributes="1"/>
-                  <Component id="jButton2" alignment="0" max="32767" attributes="1"/>
-                  <Component id="jButton1" alignment="0" max="32767" attributes="1"/>
+                  <Component id="getInstances" alignment="0" max="32767" attributes="1"/>
+                  <Component id="getDetailsButton" alignment="0" max="32767" attributes="1"/>
               </Group>
               <EmptySpace min="-2" pref="264" max="-2" attributes="0"/>
           </Group>
@@ -53,12 +53,12 @@
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="getDatabaseEntitiesButton" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="jButton2" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="getInstances" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="getDatabaseDetails" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="jButton1" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="getDetailsButton" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
@@ -187,17 +187,17 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="deleteEntityButtonActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JButton" name="jButton1">
+    <Component class="javax.swing.JButton" name="getDetailsButton">
       <Properties>
         <Property name="text" type="java.lang.String" value="GET Details"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton1ActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="getDetailsButtonActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JButton" name="jButton2">
+    <Component class="javax.swing.JButton" name="getInstances">
       <Properties>
-        <Property name="text" type="java.lang.String" value="jButton2"/>
+        <Property name="text" type="java.lang.String" value="GET Instances"/>
       </Properties>
     </Component>
   </SubComponents>
