@@ -7,7 +7,7 @@ package it.zeropoint.jedomenon.rest;
 
 /**
  *
- * @author mohsinhijazee
+ * @author Mohsin Hijazee
  */
 public class Value {
 
