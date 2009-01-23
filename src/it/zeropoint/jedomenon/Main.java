@@ -5,7 +5,9 @@
 
 package it.zeropoint.jedomenon;
 import it.zeropoint.jedomenon.gui.MainWindow;
+import it.zeropoint.jedomenon.gui.RestTestsWindow;
 import it.zeropoint.jedomenon.rest.Resource;
+import javax.swing.UIManager;
 
 /**
  *
@@ -20,6 +22,16 @@ public class Main {
    */
   public static void main(String args[]) {
     Resource.setBaseURL("http://localhost:3000");
+    /*
+    try
+    {
+      UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+    }
+    catch(Exception e)
+    {
+      e.printStackTrace();
+    }
+     */
     java.awt.EventQueue.invokeLater(new Runnable() {
       public void run() {
         new MainWindow().setVisible(true);
