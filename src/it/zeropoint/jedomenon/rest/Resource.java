@@ -170,6 +170,19 @@ public class Resource {
   {
     return this.resource.toString(indentFactor);
   }
+  
+  @Override
+  public String toString()
+  {
+    try
+    {
+      return "Bound Resource from " + (String)this.getAttribute("url");
+    }
+    catch(Exception e)
+    {
+      return "Unbound Resource";
+    }
+  }
   /**
    * This method returns the resource as a name value pair. This must be 
    * overriden by the child classes. This is needed because each PUT and POST

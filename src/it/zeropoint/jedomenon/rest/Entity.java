@@ -87,6 +87,19 @@ public class Entity extends Resource {
     return data;
   } 
   
+  @Override
+  public String toString()
+  {
+    try
+    {
+      return (String)this.getAttribute("name");
+    }
+    catch(Exception e)
+    {
+      return "Unbound Entity";
+    }
+  }
+  
     // <editor-fold defaultstate="collapsed" desc="HTTP Methods">
       // <editor-fold defaultstate="collapsed" desc="GET">
   @Override
@@ -257,9 +270,23 @@ public class Entity extends Resource {
     return null;
   }
   
-  public Resource[] getInstances()
+  public Instance[] getInstances() throws JSONException, IOException, RestException
   {
-    return null;
+    Instance instance = new Instance();
+    String url = instance.getFullPath();
+    // Prepare a condition for it
+    NameValuePair[] context  = {new NameValuePair("entity_id", 
+                                  Integer.toString(this.fromURLToID(this.url())))};
+    
+    Instance[] instances = null;
+    // Get teh resources
+    Resource[] resources = GetAll(url, context);
+    instances = new Instance[resources.length];
+    
+    for(int i = 0; i < resources.length; i++)
+      instances[i] = new Instance(resources[i]);
+    
+    return instances;
   }
   
   // </editor-fold> Specific Methods

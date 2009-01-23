@@ -3,7 +3,9 @@ package it.zeropoint.jedomenon.rest;
 
 import it.zeropoint.jedomenon.rest.exceptions.RestException;
 import java.io.IOException;
+import java.util.ArrayList;
 import org.apache.commons.httpclient.NameValuePair;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -18,6 +20,7 @@ import org.json.JSONObject;
  * named_details where each is an array
  */
 public class Instance extends Resource{
+
 
   // <editor-fold defaultstate="collapsed" desc="Constructors"> 
   public Instance() throws JSONException
@@ -177,44 +180,119 @@ public class Instance extends Resource{
   
   
   // <editor-fold defaultstate="collapsed" desc="Specific Methods"> 
-  public String getDetailsURL()
+  public String getDetailsURL() throws JSONException
   {
-    return "";
+    return (String) this.getAttribute("details_url");
   }
   
-  public String getLinksURL()
+  public String getLinksURL() throws JSONException
   {
-    return "";
+    return (String) this.getAttribute("links_url");
   }
   
-  public String getEntityURL()
+  public String getEntityURL() throws JSONException
   {
-   return "";  
+   return (String) this.getAttribute("entity_url");  
   }
   
-  public void setEntityURL(String url)
+  public void setEntityURL(String url) throws JSONException
   {
-    
+   this.setAttribute("entity_url", url); 
   }
   
-  public Detail[] getDetails()
+  public Detail[] getDetails() throws JSONException, IOException, RestException
   {
-    return null;
+    return this.getEntity().getDetails();
   }
   
   public Link[] getLinks()
   {
     return null;
   }
-  public Entity getEntity()
+  public Entity getEntity() throws JSONException, IOException, RestException
   {
-    return null;
+    return new Entity(this.fromURL(this.getEntityURL(), null));
   }
   
-  public void setEntity(Entity entity)
+  public void setEntity(Entity entity) throws JSONException
+  {
+    this.setEntityURL(entity.url());
+  }
+  
+  /**
+   * Would get the names of the details from the local object
+   * This method would fail if the instance object is yet not bound to
+   * any remote instance.
+   * @return String Array of names
+   */
+  public String[] getDetailNames() throws JSONException
   {
     
+    String[] keys = JSONObject.getNames(resource);
+    ArrayList names = new ArrayList();
+    
+    for(int i = 0; i < keys.length; i++)
+    {
+      if(resource.get(keys[i]) instanceof JSONArray)
+        names.add(keys[i]);
+    }
+    
+    String[] array = new String[names.size()];
+    
+    for(int i = 0; i < names.size(); i++)
+      array[i] = (String) names.get(i);
+    
+    return array;
+    
   }
+  
+  /**
+   * 
+   * @param detail_name
+   * @param value_index
+   * @return
+   * @throws org.json.JSONException
+   */
+  public String getValueOf(String detail_name, int value_index) throws JSONException
+  {
+    String value = "";
+    JSONArray values = (JSONArray)this.getAttribute(detail_name);
+    JSONObject val = (JSONObject) values.get(value_index);
+    
+    // If a FileAttachment type, then:
+    if(val.get("value") instanceof JSONObject)
+      value = ((JSONObject)val).getJSONObject("value").getString("filename");
+    else
+      value = val.getString("value");
+    
+    return value;
+  }
+  
+  public int getValueCountOf(String detail_name) throws JSONException
+  {
+    int count = 0;
+    JSONArray array = (JSONArray)this.getAttribute(detail_name);
+    count = array.length();
+    return count;
+  }
+  
+  public String getValueOf(String detail_name) throws JSONException
+  {
+    return this.getValueOf(detail_name, 0);
+  }
+  
+  public String[] getValuesFor(String detail_name) throws JSONException
+  {
+    String[] values = null;
+    values = new String[this.getValueCountOf(detail_name)];
+    
+    for(int i = 0; i < values.length; i++)
+      values[i] = this.getValueOf(detail_name, i);
+    
+    return values;
+  }
+  
+  
   // </editor-fold> Specific Methods
   
 }

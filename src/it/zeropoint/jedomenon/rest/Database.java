@@ -128,6 +128,19 @@ public class Database extends Resource
     return data;
   }
   
+    @Override
+  public String toString()
+  {
+    try
+    {
+      return (String)this.getAttribute("name");
+    }
+    catch(Exception e)
+    {
+      return "Unbound Database";
+    }
+  }
+  
     // <editor-fold defaultstate="collapsed" desc="HTTP Methods">
       // <editor-fold defaultstate="collapsed" desc="GET">
   @Override

@@ -14,6 +14,8 @@ import org.json.JSONObject;
 /**
  *
  * @author Mohsin Hijazee
+ * 
+ * FIXME: Add getter setters for Status and Datatype
  */
 public class Detail extends Resource{
 
@@ -75,6 +77,19 @@ public class Detail extends Resource{
     return data;
   }
   
+    @Override
+  public String toString()
+  {
+    try
+    {
+      return (String)this.getAttribute("name");
+    }
+    catch(Exception e)
+    {
+      return "Unbound Detail";
+    }
+  }
+  
     // <editor-fold defaultstate="collapsed" desc="HTTP Methods">
       // <editor-fold defaultstate="collapsed" desc="GET">
   @Override
@@ -134,5 +149,43 @@ public class Detail extends Resource{
   
     // </editor-fold> HTTP Methods
   // </editor-fold> Overrides
+  
+  // <editor-fold defaultstate="collapsed" desc="Specific Methods"> 
+  public String getDataTypeURL() throws JSONException
+  {
+    return (String) this.getAttribute("data_type_url");
+  }
+  
+  public String getDatabaseURL() throws JSONException
+  {
+    return (String) this.getAttribute("database_url");
+  }
+  
+  public void setDatabaseURL(String url) throws JSONException
+  {
+    this.setAttribute("database_url", url);
+  }
+  
+  public String getStatusURL() throws JSONException
+  {
+    return (String) this.getAttribute("status_url");
+  }
+  
+  public void setStatusURL(String url) throws JSONException
+  {
+    this.setAttribute("status_url", url);
+  }
+
+  public void setName(String name) throws JSONException
+  {
+    this.setAttribute("name", name);
+  }
+  
+  public String getName() throws JSONException
+  {
+    return (String) this.getAttribute("name");
+  }
+
+  // </editor-fold>
   
 }
